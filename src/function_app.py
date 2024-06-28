@@ -15,15 +15,15 @@ import base64
 import json
 
 # Initialize
-logging.debug("Initialize - Getting environment variables...")
+logging.info("Initialize - Getting environment variables...")
 AZURE_OPENAI_ENDPOINT=os.environ["AzureOpenAiEndpoint"]
 AZURE_OPENAI_API_VERSION=os.environ["AzureOpenAiApiVersion"]
 
 # use 'az login' locally or managed identity when deployed on Azure
-logging.debug("Getting Azure AD token provider...")
+logging.info("Getting Azure AD token provider...")
 token_provider = get_bearer_token_provider(DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default")
 
-logging.debug("Creating Azure OpenAI client...")
+logging.info("Creating Azure OpenAI client...")
 client = AzureOpenAI(
   azure_endpoint = AZURE_OPENAI_ENDPOINT,
   api_version=AZURE_OPENAI_API_VERSION,
@@ -46,18 +46,17 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
 @app.function_name(name="ExtractNotes")
 @app.route(route="ExtractNotes", methods=["POST"])
-def main(req):
+def main(req: func.HttpRequest):
     logging.info('ExtractNotes Python HTTP trigger function processed a request.')
     
-    # Get the image from the request
-    logging.debug("Getting image from the request...")
+    logging.info("Getting image from the request...")
     image = req.files['image']
-    image_bytes = image.read()
+    image_bytes = image.stream.read()
     image_base64 = base64.b64encode(image_bytes).decode('utf-8')
 
     # Identify image note type
     noteType = execute_image_completion(client, image_base64, read_file("./prompts/detectNoteType.txt"))
-    logging.debug(f"Note type is {noteType}.")
+    logging.info(f"Note type is {noteType}.")
     
     # Extract text from the image
     ocr_prompt_filename = "./prompts/ocrImage.txt"
@@ -67,7 +66,7 @@ def main(req):
       ocr_prompt_filename = "./prompts/ocrPaper.txt"
     
     extracted_text = execute_image_completion(client, image_base64, read_file(ocr_prompt_filename))
-    logging.debug("""
+    logging.info("""
 --- 1. Initial text extracted:------------------------------------------
 {extracted_text}
 ------------------------------------------------------------------------
@@ -76,14 +75,14 @@ def main(req):
     # Post-process the extracted text
     if noteType == "PAPER" or noteType == "WHITEBOARD":
       extracted_text = execute_text_completion(client, extracted_text, read_file("./prompts/proofread.txt"))
-      logging.debug("""
+      logging.info("""
 --- 2. Proof read:------------------------------------------------------
 {extracted_text}
 ------------------------------------------------------------------------
 """)
       
       extracted_text = execute_text_completion(client, extracted_text, read_file("./prompts/sectionHeader.txt"))
-      logging.debug("""
+      logging.info("""
 --- 3. Section headers:-------------------------------------------------
 {extracted_text}
 ------------------------------------------------------------------------

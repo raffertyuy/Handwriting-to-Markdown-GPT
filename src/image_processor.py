@@ -14,13 +14,13 @@ def execute_image_completion(client, encoded_image, system_prompt):
     """
 
     if client is None:
-        logging.debug("client parameter is required.")
+        logging.info("client parameter is required.")
         raise ValueError("client parameter is required.")
     if encoded_image is None:
-        logging.debug("encoded_image parameter is required.")
+        logging.info("encoded_image parameter is required.")
         raise ValueError("encoded_image parameter is required.")
     if system_prompt is None:
-        logging.debug("system_prompt parameter is required.")
+        logging.info("system_prompt parameter is required.")
         raise ValueError("system_prompt parameter is required.")
 
     messages = [
@@ -41,7 +41,7 @@ def execute_image_completion(client, encoded_image, system_prompt):
         }
     ]
 
-    logging.debug("Executing image completion...")
+    logging.info("Executing image completion...")
     response = client.chat.completions.create(
         model="gpt4o",
         messages=messages,
@@ -65,13 +65,13 @@ def execute_text_completion(client, text, system_prompt):
     """
 
     if client is None:
-        logging.debug("client parameter is required.")
+        logging.info("client parameter is required.")
         raise ValueError("client parameter is required.")
     if text is None:
-        logging.debug("text parameter is required.")
+        logging.info("text parameter is required.")
         raise ValueError("text parameter is required.")
     if system_prompt is None:
-        logging.debug("system_prompt parameter is required.")
+        logging.info("system_prompt parameter is required.")
         raise ValueError("system_prompt parameter is required.")
 
     messages = [
@@ -85,7 +85,7 @@ def execute_text_completion(client, text, system_prompt):
         }
     ]
 
-    logging.debug("Executing text completion...")
+    logging.info("Executing text completion...")
     response = client.chat.completions.create(
         model="gpt4o",
         messages=messages,
