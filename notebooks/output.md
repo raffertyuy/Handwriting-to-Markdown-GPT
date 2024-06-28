@@ -7,50 +7,49 @@ last-updated: 2024-06-17 18:08
 ![image-whiteboard-stickynotes.png](../media/image-whiteboard-stickynotes.png)
 # Help Us Solve These Problems!
 
-## Temperature Solutions
+## Temperature Issues
+
 - Make some areas warmer or colder than other rooms
 - Space heaters/blankets
-- Bring a sweater
 - Have indoor plants
-- Small heaters in study rooms
-- Blanket station
+- Smell better
+- Blanket rental
 - Library can provide blankets
 - Bring a sweater
-- Extra layers
-- Partner with local sports teams to sell sports sweaters
+- Partner with local stores to sell special sweaters
 - Bring a sweater
-- Cozy sweaters in the library
+- Carry sweaters in a backpack
 - Snuggle
 - Self-heating blankets
-- Bring a sweater
+- Bring a blanket
 
-## Napping Comfort
+## Napping Concerns
+
 - Have designated nap areas (like Google)
 - Secure your bag
-- Nap on a bean bag or make a nook to hide in
-- Link your backpack
+- Nap on a mat/take a break
+- Lock your backpack
 - Bring a friend
 - Bring a blanket
 - Take a nap at home
-- Give staff a trusted moderator and drop corner
+- Give staff a budget window for a nap corner
 - Have lockers
-- Napping pods
-- Sleep bags
-- Wear socks
-- Bring a blanket
-- Read and nap after class
-- Quiet area dedicated to napping
+- Nap pods
+- Sleeping bag
+- Wear socks to keep warm
+- Create a designated nap corner
 - Study rooms
 
 ## Study Room Security
+
 - Plan ahead of time
 - Box fort - make your own!
 - Have a small section of locked rooms
 - Lockers in study rooms
 - Whiteboards on study room doors
-- Card reservation system on study room doors
+- Card reservation system to show the room is reserved
 - Reservation system gives key code for reservation
-- Swipe your ID card to enter
-- Reservations on the doors
 - Bring back the keys
 - Have a key
+- Swipe your ID card to enter
+- Reservations on the doors

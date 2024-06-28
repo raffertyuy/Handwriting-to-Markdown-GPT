@@ -7,7 +7,6 @@ import azure.functions as func
 import logging
 
 import os
-from dotenv import load_dotenv
 from openai import AzureOpenAI
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
@@ -16,9 +15,8 @@ import base64
 import json
 
 # Initialize
-load_dotenv()
-AZURE_OPENAI_ENDPOINT=os.getenv("AZURE_OPENAI_ENDPOINT")
-AZURE_OPENAI_API_VERSION=os.getenv("AZURE_OPENAI_API_VERSION")
+AZURE_OPENAI_ENDPOINT=os.environ["AzureOpenAiEndpoint"]
+AZURE_OPENAI_API_VERSION=os.environ["AzureOpenAiApiVersion"]
 
 # use 'az login' locally or managed identity when deployed on Azure
 token_provider = get_bearer_token_provider(DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default")
@@ -29,8 +27,19 @@ client = AzureOpenAI(
   azure_ad_token_provider=token_provider
 )
 
+# A function that takes a text as input and removes possible ```markdown``` code blocks
+# for example, if the text is "```markdown\n# Title\n```", it will return "# Title"
+# or if the text is "```markdown # Title ```", it will return "# Title"
+def remove_markdown_code_blocks(text: str) -> str:
+    text = text.strip()
+    if text.startswith("```markdown"):
+        text = text[len("```markdown"):]
+    if text.endswith("```"):
+        text = text[:-len("```")]
+    return text.strip()
+
 # Function App
-app = func.FunctionApp()
+app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
 @app.route(route="ExtractNotes", methods=["POST"])
 def ExtractNotes(req: func.HttpRequest) -> func.HttpResponse:
@@ -74,6 +83,8 @@ def ExtractNotes(req: func.HttpRequest) -> func.HttpResponse:
 {extracted_text}
 ------------------------------------------------------------------------
 """)
+      
+    extracted_text = remove_markdown_code_blocks(extracted_text)
       
     # Final response
     image_filename_without_extension = os.path.splitext(image.filename)[0]
