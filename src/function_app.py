@@ -15,12 +15,15 @@ import base64
 import json
 
 # Initialize
+logging.debug("Initialize - Getting environment variables...")
 AZURE_OPENAI_ENDPOINT=os.environ["AzureOpenAiEndpoint"]
 AZURE_OPENAI_API_VERSION=os.environ["AzureOpenAiApiVersion"]
 
 # use 'az login' locally or managed identity when deployed on Azure
+logging.debug("Getting Azure AD token provider...")
 token_provider = get_bearer_token_provider(DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default")
 
+logging.debug("Creating Azure OpenAI client...")
 client = AzureOpenAI(
   azure_endpoint = AZURE_OPENAI_ENDPOINT,
   api_version=AZURE_OPENAI_API_VERSION,
@@ -39,13 +42,15 @@ def remove_markdown_code_blocks(text: str) -> str:
     return text.strip()
 
 # Function App
-app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
+app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
+@app.function_name(name="ExtractNotes")
 @app.route(route="ExtractNotes", methods=["POST"])
-def ExtractNotes(req: func.HttpRequest) -> func.HttpResponse:
+def main(req):
     logging.info('ExtractNotes Python HTTP trigger function processed a request.')
     
     # Get the image from the request
+    logging.debug("Getting image from the request...")
     image = req.files['image']
     image_bytes = image.read()
     image_base64 = base64.b64encode(image_bytes).decode('utf-8')
@@ -97,4 +102,4 @@ def ExtractNotes(req: func.HttpRequest) -> func.HttpResponse:
     }
     
     response_json = json.dumps(response_data)
-    return func.HttpResponse(response_json, mimetype="application/json")
+    return response_json
