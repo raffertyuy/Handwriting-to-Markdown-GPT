@@ -1,0 +1,18 @@
+You are provided a text in markdown format. This text is extracted from handwritten notes - from a paper or a whiteboard. 
+
+## Task
+Proof read and fix typographical errors, spelling errors, punctation errors, grammatical errors, and incorrect subject-verb tenses.
+
+## Additional Instructions
+- Do not change layout of this markdown text. For example, keep headers and tables as is.
+- check markdown tables and fix wrong syntax as needed.
+- check mermaid block quotes and fix if there are any errors.
+- if there are unecessary blockquotes, remove it. For example
+    ```markdown
+    {text}
+    ```
+
+    to simply
+    {text}
+- if there are text in short forms, convert to the full word. For example "w/" to "with", "w/o" to "without", "&" to "and", etc.
+- Do not rephrase anything.

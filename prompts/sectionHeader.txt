@@ -1,0 +1,74 @@
+You are provided a text in markdown format containing headings with "{PLACEHOLDER_HEADER}".
+Your job is to replace the headers based on its contents.
+Understand the content of each heading and replace the heading with a short keyword description of the content. Maximum 5 words.
+
+--- EXAMPLE INPUT ---
+## What is a Super App
+### {PLACEHOLDER_HEADER}
+- Statistics: We use a single app 50% of the time, 3 apps 77% of the time.
+- A Super App should be a destination app that is one of those top 3 most frequently used apps (at the moment, it is like the Grab app that I use frequently)[^1].
+- Have a direct relation with users, not an aggregation of apps with different relationships (like Google/Facebook)[^1].
+- Partnerships with other related verticals are still important to avoid building too many lines of businesses at the same time. Details of the partnerships vary, which could include: business commissions, customer fees, delivery commissions (i.e. Lazada, Shopee)
+- Most Super Apps have its own payment wallet, indicating partnerships with payment systems. Transactions with the company and with business partners (within the app) can be done via this payment wallet.
+- This implies a lot of planning on the business verticals that are accessible via the Super App.
+- Super app examples: Grab, Gojek, WeChat, Rappi, Lazada, Shopee
+
+### {PLACEHOLDER_HEADER}
+- There is current belief that super apps only work in Asia but not necessarily in North America and EMEA. This is partly due to:
+	- A lot of Asians skipped PCs and internet and went straight to mobile devices.
+	- Conglomerate structure of Asia owning multiple lines of businesses, vs. very specialized business in the US/EMEA.
+	- Some super apps are government-backed (i.e. Alibaba)
+	- In a month, US/EMEA average users interact with 20 apps.
+
+### Categories: Ecosystems & Gateways
+- **Ecosystems:** Social communities with payment systems. WeChat, for example, allows users to message friends, pay bills, and order taxis seamlessly in-app.
+	- Examples: WeChat, Gojek, Line, Kakao Talk, Grab, Zalo
+- **Gateways:** Payment platform bringing together distinct services. Paytm for example, allows you to top-up mobile phones, buy plane tickets, and book hotels using a mobile wallet integrating across different partner sites.
+	- Examples: OlaMoney, Paytm, Alipay, PiPay, Masii, MoMo
+
+### {PLACEHOLDER_HEADER}
+- Makes convenient and shortens the path to a user’s desired action. 
+- Makes available a variety of services
+- Saves phone or device memory.
+- Marketplace capabilities scale as third parties join the ecosystem.
+- Platform for a uniform and individualized user experience.
+- Incredible volumes of customer data enable targeted advertising.
+- Optimization and savings in marketing spend.
+	- Reduce user (re)acquisition cost
+	- Reach new customer segments (based on business verticals)
+
+
+--- EXAMPLE OUTPUT ---
+## What is a Super App
+### Business Characteristics
+- Statistics: We use a single app 50% of the time, 3 apps 77% of the time.
+- A Super App should be a destination app that is one of those top 3 most frequently used apps (at the moment, it is like the Grab app that I use frequently)[^1].
+- Have a direct relation with users, not an aggregation of apps with different relationships (like Google/Facebook)[^1].
+- Partnerships with other related verticals are still important to avoid building too many lines of businesses at the same time. Details of the partnerships vary, which could include: business commissions, customer fees, delivery commissions (i.e. Lazada, Shopee)
+- Most Super Apps have its own payment wallet, indicating partnerships with payment systems. Transactions with the company and with business partners (within the app) can be done via this payment wallet.
+- This implies a lot of planning on the business verticals that are accessible via the Super App.
+- Super app examples: Grab, Gojek, WeChat, Rappi, Lazada, Shopee
+
+### Market Insights
+- There is current belief that super apps only work in Asia but not necessarily in North America and EMEA. This is partly due to:
+	- A lot of Asians skipped PCs and internet and went straight to mobile devices.
+	- Conglomerate structure of Asia owning multiple lines of businesses, vs. very specialized business in the US/EMEA.
+	- Some super apps are government-backed (i.e. Alibaba)
+	- In a month, US/EMEA average users interact with 20 apps.
+
+### Categories: Ecosystems & Gateways
+- **Ecosystems:** Social communities with payment systems. WeChat, for example, allows users to message friends, pay bills, and order taxis seamlessly in-app.
+	- Examples: WeChat, Gojek, Line, Kakao Talk, Grab, Zalo
+- **Gateways:** Payment platform bringing together distinct services. Paytm for example, allows you to top-up mobile phones, buy plane tickets, and book hotels using a mobile wallet integrating across different partner sites.
+	- Examples: OlaMoney, Paytm, Alipay, PiPay, Masii, MoMo
+
+### Advantages
+- Makes convenient and shortens the path to a user’s desired action. 
+- Makes available a variety of services
+- Saves phone or device memory.
+- Marketplace capabilities scale as third parties join the ecosystem.
+- Platform for a uniform and individualized user experience.
+- Incredible volumes of customer data enable targeted advertising.
+- Optimization and savings in marketing spend.
+	- Reduce user (re)acquisition cost
+	- Reach new customer segments (based on business verticals)

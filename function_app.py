@@ -42,15 +42,15 @@ def ExtractNotes(req: func.HttpRequest) -> func.HttpResponse:
     image_base64 = base64.b64encode(image_bytes).decode('utf-8')
 
     # Identify image note type
-    noteType = execute_image_completion(client, image_base64, read_file("../prompts/detectNoteType.txt"))
+    noteType = execute_image_completion(client, image_base64, read_file("./prompts/detectNoteType.txt"))
     logging.debug(f"Note type is {noteType}.")
     
     # Extract text from the image
-    ocr_prompt_filename = "../prompts/ocrImage.txt"
+    ocr_prompt_filename = "./prompts/ocrImage.txt"
     if noteType == "PAPER":
-      ocr_prompt_filename = "../prompts/ocrPaper.txt"
+      ocr_prompt_filename = "./prompts/ocrPaper.txt"
     elif noteType == "WHITEBOARD":
-      ocr_prompt_filename = "../prompts/ocrPaper.txt"
+      ocr_prompt_filename = "./prompts/ocrPaper.txt"
     
     extracted_text = execute_image_completion(client, image_base64, read_file(ocr_prompt_filename))
     logging.debug("""
@@ -61,14 +61,14 @@ def ExtractNotes(req: func.HttpRequest) -> func.HttpResponse:
     
     # Post-process the extracted text
     if noteType == "PAPER" or noteType == "WHITEBOARD":
-      extracted_text = execute_text_completion(client, extracted_text, read_file("../prompts/proofread.txt"))
+      extracted_text = execute_text_completion(client, extracted_text, read_file("./prompts/proofread.txt"))
       logging.debug("""
 --- 2. Proof read:------------------------------------------------------
 {extracted_text}
 ------------------------------------------------------------------------
 """)
       
-      extracted_text = execute_text_completion(client, extracted_text, read_file("../prompts/sectionHeader.txt"))
+      extracted_text = execute_text_completion(client, extracted_text, read_file("./prompts/sectionHeader.txt"))
       logging.debug("""
 --- 3. Section headers:-------------------------------------------------
 {extracted_text}
@@ -76,7 +76,11 @@ def ExtractNotes(req: func.HttpRequest) -> func.HttpResponse:
 """)
       
     # Final response
+    image_filename_without_extension = os.path.splitext(image.filename)[0]
+    
     response_data = {
+      "filename": image.filename,
+      "filenameWithoutExtension": image_filename_without_extension,
       "noteType": noteType,
       "extractedText": extracted_text
     }
