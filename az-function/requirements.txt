@@ -5,5 +5,3 @@
 azure-functions
 azure-identity==1.16.0
 openai==1.25.1
-load-dotenv==0.1.0
-python-dotenv==1.0.1

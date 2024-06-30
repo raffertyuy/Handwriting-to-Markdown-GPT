@@ -24,6 +24,7 @@ local.settings.json
 
 node_modules
 dist
+samples
 
 # Local python packages
 .python_packages/

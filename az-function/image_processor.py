@@ -1,6 +1,6 @@
 import logging
 
-def execute_image_completion(client, encoded_image, system_prompt):
+def execute_image_completion(client, encoded_image, system_prompt, deployment_name="gpt-4o", temperature=0):
     """
     Executes a GPT-4o chat completion based on the system prompt and encoded image.
 
@@ -8,6 +8,8 @@ def execute_image_completion(client, encoded_image, system_prompt):
         client (object): The Azure OpenAI client object.
         encoded_image (str): The base64 encoded image.
         system_prompt (str, optional): The system prompt. Defaults to None.
+        deployment_name (str): The deployment name of the vision model.
+        temperature (float, optional): The temperature of the completion. Defaults to 0.
 
     Returns:
         str: The generated response from the chat completion.
@@ -43,15 +45,15 @@ def execute_image_completion(client, encoded_image, system_prompt):
 
     logging.info("Executing image completion...")
     response = client.chat.completions.create(
-        model="gpt4o",
+        model=deployment_name,
         messages=messages,
-        temperature=0.3
+        temperature=temperature
     )
 
     return response.choices[0].message.content
 
 
-def execute_text_completion(client, text, system_prompt):
+def execute_text_completion(client, text, system_prompt, deployment_name="gpt-4o", temperature=0.3):
     """
     Executes a GPT-4o chat completion based on the system prompt and text input.
 
@@ -59,6 +61,8 @@ def execute_text_completion(client, text, system_prompt):
         client (object): The Azure OpenAI client object.
         text (str): The user text input.
         system_prompt (str, optional): The system prompt. Defaults to None.
+        deployment_name (str): The deployment name of the chat completion model.
+        temperature (float, optional): The temperature of the completion. Defaults to 0.3.
 
     Returns:
         str: The generated response from the chat completion.
@@ -108,18 +112,3 @@ def read_file(file_path):
     with open(file_path, 'r') as file:
         content = file.read()
     return content
-
-
-def save_string_to_file(string, file_path):
-    """
-    Saves a string to a file.
-
-    Args:
-        string (str): The string to be saved.
-        file_path (str): The path to the file.
-
-    Returns:
-        None
-    """
-    with open(file_path, 'w') as file:
-        file.write(string)

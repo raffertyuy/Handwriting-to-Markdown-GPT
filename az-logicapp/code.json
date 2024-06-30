@@ -1,0 +1,181 @@
+{
+  "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "actions": {
+          "Compose_-_File_Name_Prefix": {
+              "inputs": "@{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyyMMdd-HHmmss')}-",
+              "runAfter": {
+                  "Parse_JSON_-_Get_ExtractNotes_Response": [
+                      "Succeeded"
+                  ]
+              },
+              "type": "Compose"
+          },
+          "Copy_file": {
+              "inputs": {
+                  "host": {
+                      "connection": {
+                          "name": "@parameters('$connections')['onedrive']['connectionId']"
+                      }
+                  },
+                  "method": "post",
+                  "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(triggerOutputs()['headers']['x-ms-file-id']))}/copy",
+                  "queries": {
+                      "destination": "/second-brain/second-brain/_fleeting-notes/@{outputs('Compose_-_File_Name_Prefix')}@{body('Get_file_metadata')?['Name']}",
+                      "overwrite": true
+                  }
+              },
+              "runAfter": {
+                  "Compose_-_File_Name_Prefix": [
+                      "Succeeded"
+                  ]
+              },
+              "type": "ApiConnection"
+          },
+          "Create_markdown_file": {
+              "inputs": {
+                  "body": "---\nnote-type: @{body('Parse_JSON_-_Get_ExtractNotes_Response')?['noteType']}\ncreated-date: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\nlast-updated: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\n---\n# @{body('Get_file_metadata')?['Name']}\n![{@{body('Get_file_metadata')?['Name']}}](@{body('Copy_file')?['Name']})\n\n@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedText']}",
+                  "host": {
+                      "connection": {
+                          "name": "@parameters('$connections')['onedrive']['connectionId']"
+                      }
+                  },
+                  "method": "post",
+                  "path": "/datasets/default/files",
+                  "queries": {
+                      "folderPath": "/second-brain/second-brain/_fleeting-notes",
+                      "name": "@{outputs('Compose_-_File_Name_Prefix')}@{body('Get_file_metadata')?['NameNoExt']}.md"
+                  }
+              },
+              "runAfter": {
+                  "Copy_file": [
+                      "Succeeded"
+                  ]
+              },
+              "runtimeConfiguration": {
+                  "contentTransfer": {
+                      "transferMode": "Chunked"
+                  }
+              },
+              "type": "ApiConnection"
+          },
+          "Get_file_metadata": {
+              "inputs": {
+                  "host": {
+                      "connection": {
+                          "name": "@parameters('$connections')['onedrive']['connectionId']"
+                      }
+                  },
+                  "method": "get",
+                  "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(triggerOutputs()['headers']['x-ms-file-id']))}"
+              },
+              "runAfter": {},
+              "type": "ApiConnection"
+          },
+          "HTTP_-_Extract_Notes": {
+              "inputs": {
+                  "authentication": {
+                      "type": "ManagedServiceIdentity"
+                  },
+                  "body": {
+                      "$content-type": "multipart/form-data",
+                      "$multipart": [
+                          {
+                              "body": "@triggerBody()",
+                              "headers": {
+                                  "Content-Disposition": "form-data; name=image; filename=\"@{triggerOutputs()['headers']['x-ms-file-name-encoded']}\"",
+                                  "Content-Type": "@{triggerOutputs()['headers']['Content-Type']}"
+                              }
+                          }
+                      ]
+                  },
+                  "method": "POST",
+                  "uri": "https://razpython.azurewebsites.net/api/ExtractNotes"
+              },
+              "runAfter": {
+                  "Get_file_metadata": [
+                      "Succeeded"
+                  ]
+              },
+              "runtimeConfiguration": {
+                  "contentTransfer": {
+                      "transferMode": "Chunked"
+                  }
+              },
+              "type": "Http"
+          },
+          "Parse_JSON_-_Get_ExtractNotes_Response": {
+              "inputs": {
+                  "content": "@body('HTTP_-_Extract_Notes')",
+                  "schema": {
+                      "properties": {
+                          "extractedText": {
+                              "type": "string"
+                          },
+                          "noteType": {
+                              "type": "string"
+                          }
+                      },
+                      "type": "object"
+                  }
+              },
+              "runAfter": {
+                  "HTTP_-_Extract_Notes": [
+                      "Succeeded"
+                  ]
+              },
+              "type": "ParseJson"
+          }
+      },
+      "contentVersion": "1.0.0.0",
+      "outputs": {},
+      "parameters": {
+          "$connections": {
+              "defaultValue": {},
+              "type": "Object"
+          }
+      },
+      "triggers": {
+          "When_a_file_is_created": {
+              "evaluatedRecurrence": {
+                  "frequency": "Minute",
+                  "interval": 5
+              },
+              "inputs": {
+                  "host": {
+                      "connection": {
+                          "name": "@parameters('$connections')['onedrive']['connectionId']"
+                      }
+                  },
+                  "method": "get",
+                  "path": "/datasets/default/triggers/onnewfilev2",
+                  "queries": {
+                      "folderId": "A8546FE4B5BBEFDD!93368",
+                      "includeSubfolders": true,
+                      "inferContentType": true,
+                      "simulate": false
+                  }
+              },
+              "metadata": {
+                  "A8546FE4B5BBEFDD!93368": "/Handwritten Notes"
+              },
+              "recurrence": {
+                  "frequency": "Minute",
+                  "interval": 5
+              },
+              "type": "ApiConnection"
+          }
+      }
+  },
+  "parameters": {
+      "$connections": {
+          "value": {
+              "onedrive": {
+                  "connectionId": "/subscriptions/7308e0b7-489d-4f8b-80b7-832b0662d47d/resourceGroups/logicapps-rg/providers/Microsoft.Web/connections/onedrive",
+                  "connectionName": "onedrive",
+                  "id": "/subscriptions/7308e0b7-489d-4f8b-80b7-832b0662d47d/providers/Microsoft.Web/locations/southeastasia/managedApis/onedrive"
+              }
+          }
+      }
+  }
+}

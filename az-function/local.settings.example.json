@@ -5,6 +5,9 @@
       "AzureWebJobsFeatureFlags": "EnableWorkerIndexing",
       "AzureWebJobsStorage": "UseDevelopmentStorage=true",
       "AzureOpenAiEndpoint": "https://yourendpoint.openai.azure.com/",
-      "AzureOpenAiVersion": "2024-02-01"
+      "AzureOpenAiVersion": "2024-02-01",
+      "AzureOpenAiDeployment": "gpt-4o",
+      "AzureOpenAiVisionTemperature": 0,
+      "AzureOpenAiTextTemperature": 0.3
     }
   }
