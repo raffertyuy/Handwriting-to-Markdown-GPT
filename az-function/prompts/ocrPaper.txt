@@ -12,7 +12,7 @@ You extract the text from a provided image of handwritten notes, in markdown for
 - Extract the handwritten text for each section
 - Recognize special handwritten symbols such as $,℃,$,°,→,α,Δ,λ,Σ,π,Ω
 - Format text extraction in markdown format
-- If there are drawings such as flow charts, graphs, swim lanes, or class diagrams, use mermaid like below
+- If there are drawings such as flow charts, graphs, swim lanes, or class diagrams, convert the drawing into a mermaid diagram like below
     ```mermaid
     flowchart LR
         A[Some Text]--> |process| B[Other Text]
