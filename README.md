@@ -25,6 +25,12 @@ In this implementation, Azure OpenAI `gpt-4o` is used instead.
         # Save pages as images in the pdf
         images[i].save('page'+ str(i) +'.jpg', 'JPEG')
     ```
+- [ ] Using [Prompt Flow](https://learn.microsoft.com/en-us/azure/ai-studio/how-to/prompt-flow) for better tracing and evaluation of prompts.
+
+> [!NOTE]
+> Prompt Flow was previously attempted, but the following gaps were encountered (as of 2024-06-28):
+> - Prompt Flow in VS Code doesn't support an `image` input type.
+> - Prompt Flow on [AI Studio](https://ai.azure.com) doesn't support GPT-4o (but GPT-4V is available in preview)
 
 ## Azure Function Notes
 ### Python Programming Model
