@@ -33,10 +33,10 @@ client = AzureOpenAI(
 # or if the text is "```markdown # Title ```", it will return "# Title"
 def remove_markdown_code_blocks(text: str) -> str:
     text = text.strip()
-    if text.startswith("```markdown"):
+    if text.startswith("```markdown") and text.endswith("```"):
         text = text[len("```markdown"):]
-    if text.endswith("```"):
         text = text[:-len("```")]
+        
     return text.strip()
 
 # Function App
