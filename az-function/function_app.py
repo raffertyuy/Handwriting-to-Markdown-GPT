@@ -40,7 +40,7 @@ def remove_markdown_code_blocks(text: str) -> str:
     return text.strip()
 
 # Function App
-app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
+app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
 @app.function_name(name="ExtractNotes")
 @app.route(route="", methods=["POST"])
