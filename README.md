@@ -2,11 +2,29 @@
 This repo reads notes from a notebook, paper, or whiteboard and converts it into Markdown (*.md) using GenAI.
 
 This code is the next iteration of a previous [Handwriting-to-Markdown](https://github.com/raffertyuy/Handwriting-to-Markdown/tree/main) Azure Logic App which was doing something similar but using Azure AI Services - Computer Vision.
-In this code, Azure OpenAI `gpt-4o` is used instead.
-
+In this implementation, Azure OpenAI `gpt-4o` is used instead.
 - `./az-function` contains the main code using python and deployed to Azure Functions
 - `./az-logicapp` contains code that triggers when a photo is added in a OneDrive source folder, and creates an `.md` file in a OneDrive target folder
 
+## Use Case
+- Watch for new files in a specific OneDrive folder (using Azure Logic Apps)
+- Process the files using GPT-4o (through a Function App)
+- Copy the image and save a new markdown file output in a destination oneDrive folder.
+
+## Limitations / TODOs
+- [ ] GPT-4o only accepts image files. Add error handling for unsupported file types.
+- [ ] Add a new Azure Function for converting PDF to image files using this sample code (with revisions to save individual image files to OneDrive)
+    ```python
+    # import module
+    from pdf2image import convert_from_path
+
+    # Store Pdf with convert_from_path function
+    images = convert_from_path('example.pdf')
+
+    for i in range(len(images)):
+        # Save pages as images in the pdf
+        images[i].save('page'+ str(i) +'.jpg', 'JPEG')
+    ```
 
 ## Azure Function Notes
 ### Python Programming Model
@@ -50,6 +68,7 @@ Since we're passing a OneDrive file to Azure Functions as a `multipart/form-data
 > [!NOTE]
 > I eventually used the **HTTP Request** connector instead of an **Azure Functions** connector.
 > This is because the response body is in JSON, and the Azure Functions connector returns this in a JSON-escaped string format.
+> Since I'm using Obsidian for my second brain, my final markdown image link uses `![[image_path]]` instead of the standard `![name](image_path)` format.
 
 ### Deployment
 - `azuredeploy.json` is the ARM template to be deployed to azure.

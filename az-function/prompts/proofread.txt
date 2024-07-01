@@ -5,14 +5,18 @@ Proof read and fix typographical errors, spelling errors, punctation errors, gra
 
 ## Additional Instructions
 - Do not change layout of this markdown text. For example, keep headers and tables as is.
-- check markdown tables and fix wrong syntax as needed.
-- check mermaid block quotes and fix if there are any errors.
-- if there are unecessary blockquotes, remove it. For example
-    ```markdown
-    {text}
+- check and revalidate markdown tables and fix as needed.
+- check and revalidate markdown mermaid blocks (i.e. ```mermaid ```) and fix as needed.
+    For example mermaid does not support multi-spaced words like this
+    ```mermaid
+    flowchart LR
+        Two Words --> More Than Two
     ```
-
-    to simply
-    {text}
+    
+    instead use initials and enclose in [] like this
+    ```mermaid
+    flowchart LR
+        TW[Two Words] --> MTT[More Than Two]
+    ```
 - if there are text in short forms, convert to the full word. For example "w/" to "with", "w/o" to "without", "&" to "and", etc.
-- Do not rephrase anything.
+- Do not rephrase or paraphrase anything so it doesn't lose its meaning.

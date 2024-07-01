@@ -1,55 +1,46 @@
 ---
-note-type: WHITEBOARD
-created-date: 2024-06-17 18:08
-last-updated: 2024-06-17 18:08
+note-type: PAPER
+created-date: 2024-07-01 17:23
+last-updated: 2024-07-01 17:23
 ---
-# image-whiteboard-stickynotes.png
-![image-whiteboard-stickynotes.png](../media/image-whiteboard-stickynotes.png)
-# Help Us Solve These Problems!
+# testnotes.jpeg
+![testnotes.jpeg](../media/testnotes.jpeg)
+## 20240701 My Test Notes
 
-## Temperature Issues
+This is me, randomly writing something to test my app.
 
-- Make some areas warmer or colder than other rooms
-- Space heaters/blankets
-- Have indoor plants
-- Smell better
-- Blanket rental
-- Library can provide blankets
-- Bring a sweater
-- Partner with local stores to sell special sweaters
-- Bring a sweater
-- Carry sweaters in a backpack
-- Snuggle
-- Self-heating blankets
-- Bring a blanket
+### Attendees:
+Riff, Raynor, Jim, John, Kerrigan, Annie
 
-## Napping Concerns
+## MOTM
 
-- Have designated nap areas (like Google)
-- Secure your bag
-- Nap on a mat/take a break
-- Lock your backpack
-- Bring a friend
-- Bring a blanket
-- Take a nap at home
-- Give staff a budget window for a nap corner
-- Have lockers
-- Nap pods
-- Sleeping bag
-- Wear socks to keep warm
-- Create a designated nap corner
-- Study rooms
+Top priorities
+- More apps using Generative AI
+- Use GitHub Copilot!
+- How to integrate with Azure
+- Continuous Integration/Continuous Deployment?
 
-## Study Room Security
+### Monthly Planning
 
-- Plan ahead of time
-- Box fort - make your own!
-- Have a small section of locked rooms
-- Lockers in study rooms
-- Whiteboards on study room doors
-- Card reservation system to show the room is reserved
-- Reservation system gives key code for reservation
-- Bring back the keys
-- Have a key
-- Swipe your ID card to enter
-- Reservations on the doors
+| July         | August         | September     |
+|--------------|----------------|---------------|
+| - Comms      | - Enablement   | - Execution   |
+| - Meetings   | - Workshops    | - Metrics     |
+
+### Notes and Diagram
+
+Note:
+- This is written in markdown
+- I should include drawings
+
+```mermaid
+flowchart LR
+    Notes --> Code
+    Code --> DevTest[Dev Test]
+    DevTest --> ReusableTemplate[Reusable Template]
+    Code --> Documentation
+```
+
+^ Hope this makes sense?
+
+_Let's write in script._

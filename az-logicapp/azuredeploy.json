@@ -182,7 +182,7 @@
                                     }
                                 },
                                 "method": "post",
-                                "body": "---\nnote-type: @{body('Parse_JSON_-_Get_ExtractNotes_Response')?['noteType']}\ncreated-date: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\nlast-updated: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\n---\n# @{body('Get_file_metadata')?['Name']}\n![{@{body('Get_file_metadata')?['Name']}}](@{body('Copy_file')?['Name']})\n\n@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedText']}",
+                                "body": "---\nnote-type: @{body('Parse_JSON_-_Get_ExtractNotes_Response')?['noteType']}\ncreated-date: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\nlast-updated: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\n---\n# @{body('Get_file_metadata')?['Name']}\n![[@{body('Copy_file')?['Name']}]]\n\n@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedText']}",
                                 "path": "/datasets/default/files",
                                 "queries": {
                                     "folderPath": "/second-brain/second-brain/_fleeting-notes",
