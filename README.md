@@ -6,10 +6,33 @@ In this implementation, Azure OpenAI `gpt-4o` is used instead.
 - `./az-function` contains the main code using python and deployed to Azure Functions
 - `./az-logicapp` contains code that triggers when a photo is added in a OneDrive source folder, and creates an `.md` file in a OneDrive target folder
 
-## Use Case
+Also see this [blog post](https://raffertyuy.com/raztype/handwriting-to-second-brain-gpt/)
+
+## Solution Flow
+This solution will:
+
 - Watch for new files in a specific OneDrive folder (using Azure Logic Apps)
 - Process the files using GPT-4o (through a Function App)
-- Copy the image and save a new markdown file output in a destination oneDrive folder.
+- Copy the image and save a new markdown file output in a destination OneDrive folder.
+
+```mermaid
+flowchart LR
+    H[Handwritten Notes/Image<br />from OneDrive] --> |image content| N{Detect Note Type}
+    subgraph "Azure Function"
+        subgraph "Azure OpenAI GPT-4o Prompts"
+            N --> |Paper| P[Paper System Prompt]
+            N --> |Whiteboard| W[Whiteboard System Prompt]
+            N --> |Other| O[Generic System Prompt]
+            P --> PR[Proof Read]
+            W --> |text output| PR
+            O --> PR
+            PR --> S[Section<br />Headers]
+        end
+         S --> IT[Initial<br />Output]
+         IT --> |add<br />metadata| Output[Final<br />Output]
+    end
+    Output --> |save| MD[Markdown File<br />in OneDrive]
+```
 
 ## Limitations / TODOs
 - [ ] GPT-4o only accepts image files. Add error handling for unsupported file types.
