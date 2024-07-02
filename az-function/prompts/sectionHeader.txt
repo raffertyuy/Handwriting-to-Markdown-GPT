@@ -1,10 +1,13 @@
 You are provided a text in markdown format containing headings with "{PLACEHOLDER_HEADER}".
-Your job is to replace the headers based on its contents.
-The {PLACEHOLDER_HEADER} could be a section header or a table header.
-- if a section header, understand the content of each heading and replace the heading with a short keyword description of the content. Maximum 5 words.
-- if a table header, understand the rows in that column and replace the heading with a short keyword description of the rows. Maximum 3 words.
+Your job is to replace the "{PLACEHOLDER_HEADER}" headers based on its contents.
+- if "{PLACEHOLDER_HEADER}" is a section header, understand the content of each heading and replace the heading with a short keyword description of the content. Maximum 5 words.
+- if "{PLACEHOLDER_HEADER}" is a table header, understand the rows in that column and replace the heading with a short keyword description of the rows. Maximum 3 words.
 
---- EXAMPLE INPUT ---
+If the header is not "{PLACEHOLDER_HEADER}", do not do anything. Keep the original header text.
+Here is are some examples, notice that only the "{PLACEHOLDER_HEADER}" text is replaced.
+
+## Example 1: Input
+```
 ## What is a Super App
 ### {PLACEHOLDER_HEADER}
 - Statistics: We use a single app 50% of the time, 3 apps 77% of the time.
@@ -13,29 +16,15 @@ The {PLACEHOLDER_HEADER} could be a section header or a table header.
 - Partnerships with other related verticals are still important to avoid building too many lines of businesses at the same time. Details of the partnerships vary, which could include: business commissions, customer fees, delivery commissions (i.e. Lazada, Shopee)
 - This implies a lot of planning on the business verticals that are accessible via the Super App.
 
-### {PLACEHOLDER_HEADER}
-- There is current belief that super apps only work in Asia but not necessarily in North America and EMEA. This is partly due to:
-	- A lot of Asians skipped PCs and internet and went straight to mobile devices.
-	- Conglomerate structure of Asia owning multiple lines of businesses, vs. very specialized business in the US/EMEA.
-	- In a month, US/EMEA average users interact with 20 apps.
-
 ### Categories: Ecosystems & Gateways
-- **Ecosystems:** Social communities with payment systems. WeChat, for example, allows users to message friends, pay bills, and order taxis seamlessly in-app.
-- **Gateways:** Payment platform bringing together distinct services. Paytm for example, allows you to top-up mobile phones, buy plane tickets, and book hotels using a mobile wallet integrating across different partner sites.
+| Category   | {PLACEHOLDER_HEADER}                                                                                                                                                                                              |
+|:-----------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Ecosystems | Social communities with payment systems. WeChat, for example, allows users to message friends, pay bills, and order taxis seamlessly in-app.                                                                      |
+| Gateways   | Payment platform bringing together distinct services. Paytm for example, allows you to top-up mobile phones, buy plane tickets, and book hotels using a mobile wallet integrating across different partner sites. |
+```
 
-### {PLACEHOLDER_HEADER}
-- Makes convenient and shortens the path to a user’s desired action. 
-- Makes available a variety of services
-- Saves phone or device memory.
-- Marketplace capabilities scale as third parties join the ecosystem.
-- Platform for a uniform and individualized user experience.
-- Incredible volumes of customer data enable targeted advertising.
-- Optimization and savings in marketing spend.
-	- Reduce user (re)acquisition cost
-	- Reach new customer segments (based on business verticals)
-
-
---- EXAMPLE OUTPUT ---
+## Example 1: Output
+```
 ## What is a Super App
 ### Business Characteristics
 - Statistics: We use a single app 50% of the time, 3 apps 77% of the time.
@@ -44,23 +33,27 @@ The {PLACEHOLDER_HEADER} could be a section header or a table header.
 - Partnerships with other related verticals are still important to avoid building too many lines of businesses at the same time. Details of the partnerships vary, which could include: business commissions, customer fees, delivery commissions (i.e. Lazada, Shopee)
 - This implies a lot of planning on the business verticals that are accessible via the Super App.
 
-### Market Insights
-- There is current belief that super apps only work in Asia but not necessarily in North America and EMEA. This is partly due to:
-	- A lot of Asians skipped PCs and internet and went straight to mobile devices.
-	- Conglomerate structure of Asia owning multiple lines of businesses, vs. very specialized business in the US/EMEA.
-	- In a month, US/EMEA average users interact with 20 apps.
-
 ### Categories: Ecosystems & Gateways
-- **Ecosystems:** Social communities with payment systems. WeChat, for example, allows users to message friends, pay bills, and order taxis seamlessly in-app.
-- **Gateways:** Payment platform bringing together distinct services. Paytm for example, allows you to top-up mobile phones, buy plane tickets, and book hotels using a mobile wallet integrating across different partner sites.
+| Category   | Description                                                                                                                                                                                                       |
+|:-----------|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Ecosystems | Social communities with payment systems. WeChat, for example, allows users to message friends, pay bills, and order taxis seamlessly in-app.                                                                      |
+| Gateways   | Payment platform bringing together distinct services. Paytm for example, allows you to top-up mobile phones, buy plane tickets, and book hotels using a mobile wallet integrating across different partner sites. |
+```
 
-### Advantages
-- Makes convenient and shortens the path to a user’s desired action. 
-- Makes available a variety of services
-- Saves phone or device memory.
-- Marketplace capabilities scale as third parties join the ecosystem.
-- Platform for a uniform and individualized user experience.
-- Incredible volumes of customer data enable targeted advertising.
-- Optimization and savings in marketing spend.
-	- Reduce user (re)acquisition cost
-	- Reach new customer segments (based on business verticals)
+## Example 2: Input
+```
+### Schedule
+| July         | August         | September     |
+|--------------|----------------|---------------|
+| - Comms      | - Enablement   | - Execution   |
+| - Meetings   | - Workshops    | - Metrics     |
+```
+
+## Example 2: Output
+```
+### Schedule
+| July         | August         | September     |
+|--------------|----------------|---------------|
+| - Comms      | - Enablement   | - Execution   |
+| - Meetings   | - Workshops    | - Metrics     |
+```

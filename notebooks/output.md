@@ -1,67 +1,44 @@
 ---
-note-type: WHITEBOARD
-created-date: 2024-07-02 18:34
-last-updated: 2024-07-02 18:34
+note-type: PAPER
+created-date: 2024-07-01 17:23
+last-updated: 2024-07-01 17:23
 ---
-# whiteboard-sample.png
-![whiteboard-sample.png](../media/whiteboard-sample.png)
-## App Innovation in the Era of AI
+# notes-sample.png
+![notes-sample.png](../media/notes-sample.png)
+## 20240701 My Test Notes
 
-Every app will be reinvented with AI  
-New apps will be built that weren't possible
+This is me, randomly writing something to test my app.
 
-### Current Trends
+### Attendees:
+Riff, Raynor, Jim, John, Kerrigan, Annie
 
-- Increased efficiency in business processes
-- AI influence to better customer engagement and business growth
-- AI is accelerating the need to move to the cloud.
+## MOTM
 
-#### Migration and Modernization
+Top priorities
+- More apps using Generative AI
+- Use GitHub Copilot!
+- How to integrate with Azure
+- Continuous Integration/Continuous Deployment?
 
-- Visual Studio - Azure Migrate extension, "Replatform to Azure" button!
-- GitHub Copilot skills for Azure Migrate
+### Schedule
 
-#### Intelligent Apps
+| July         | August         | September     |
+|--------------|----------------|---------------|
+| - Comms      | - Enablement   | - Execution   |
+| - Meetings   | - Workshops    | - Metrics     |
 
-- Also:
-  - Buy a Copilot (Microsoft 365, etc.) vs. Build a Copilot (Copilot Stack, Professional Code)
-  - Copilot Studio (Low Code)
+### Notes
 
-#### Observability and Evaluation
+Note:
+- This is written in markdown
+- I should include drawings
 
-- Prompt flow
-- AI apps / AI pipeline
+```mermaid
+flowchart LR
+    Notes --> |Code| DevTest --> RT[Reusable Template]
+    Notes --> Documentation
+```
 
-#### Integration
+^ Hope this makes sense?
 
-- AI Gateways
-  - API Management
-  - AI Hub
-- Logic Apps
-- Power Automate
-
-## App Development and Design in the Era of AI
-
-### Chatbot Integration
-
-Many existing apps are implementing a chatbot
-
-#### Intelligent Search
-
-- Design apps with this in mind
-  - e.g., remove extensive and deep website navigation menus
-- Make online publications (documents, annual reports, etc.) easier to find
-- Rethink how PDF publications should be formatted for easier embeddings extraction
-
-#### Development Skills
-
-- Every developer needs to know prompt engineering (AIs can be semantic)
-- AI engineers to work beyond notebooks, to make models consumable by apps
-- Infrastructure/Operations engineers are now more empowered to code
-- Business leaders can now use AI to understand code
-
-#### AI Assistants
-
-- Still new but rapidly evolving
-- Changes how procedural algorithms are coded
-- Can do more than code (i.e., research, draft documents)
+_Let's write in script._
