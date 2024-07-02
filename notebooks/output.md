@@ -3,12 +3,12 @@ note-type: WHITEBOARD
 created-date: 2024-07-02 18:34
 last-updated: 2024-07-02 18:34
 ---
-# whiteboard-full-sample.png
-![whiteboard-full-sample.png](../media/whiteboard-full-sample.png)
+# whiteboard-sample.png
+![whiteboard-sample.png](../media/whiteboard-sample.png)
 ## App Innovation in the Era of AI
 
-Every app will be reinvented with AI.  
-New apps will be built that weren't possible.
+Every app will be reinvented with AI  
+New apps will be built that weren't possible
 
 ### Current Trends
 
@@ -18,13 +18,14 @@ New apps will be built that weren't possible.
 
 #### Migration and Modernization
 
-- Visual Studio - Azure Migrate extension: "Replatform to Azure"
+- Visual Studio - Azure Migrate extension, "Replatform to Azure" button!
 - GitHub Copilot skills for Azure Migrate
 
 #### Intelligent Apps
 
-- Buy a Copilot (Microsoft 365, etc.) vs. Build a Copilot (Copilot Stack: Professional Code)
-- Copilot Studio (Low Code)
+- Also:
+  - Buy a Copilot (Microsoft 365, etc.) vs. Build a Copilot (Copilot Stack, Professional Code)
+  - Copilot Studio (Low Code)
 
 #### Observability and Evaluation
 
@@ -43,9 +44,9 @@ New apps will be built that weren't possible.
 
 ### Chatbot Integration
 
-Many existing apps are implementing a chatbot.
+Many existing apps are implementing a chatbot
 
-#### Design Considerations
+#### Intelligent Search
 
 - Design apps with this in mind
   - e.g., remove extensive and deep website navigation menus

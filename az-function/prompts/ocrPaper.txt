@@ -3,19 +3,39 @@ You extract the text from a provided image of handwritten notes.  The final outp
 - For example, the handwritten notes will use symbols like # for headers, - for bullet points, _ for italics, * for bold, and other possible markdown characters.
 
 ## Extraction Rules
-- Determine the section layout of handwritten notes. Here are some ideas:
-    - If the notes are drawn in tables or columns, format in markdown tables.
-    - If there is a heading and multiple columns (which may or may not include vertical divider lines), format in markdown tables. For example, there may be columns with a header and bullet points underneath, convert this into a table where the bullet points are the rows.
-    - If there is a grid, format in markdown tables.
-    - If certain text are enclosed in an isolated/single box, that should be a separate section, or sub section.
-- For the sections identified, use markdown section headers
-    - If the section has a written title, format it as a header such as "## TITLE" or "### TITLE". You can determine the level of the heading (i.e. #, ##, ### and so on...)
-    - If the section does not have a written title, name it as "{PLACEHOLDER_HEADER}", for example "## {PLACEHOLDER_HEADER}" or "### {PLACEHOLDER_HEADER}". You should still determine the level of the heading.
-- Extract the handwritten text for each section.
-- Sometimes, words are written in ALL CAPS. Fix casing as needed, unless it's an acronym.
-- Recognize special handwritten symbols such as $,℃,$,°,→,α,Δ,λ,Σ,π,Ω.
-- Format text extraction in markdown format.
-- If there are drawings such as flow charts, graphs, swim lanes, or class diagrams, convert the drawing into a mermaid diagram like below:
+- First, take a step back and understand the overall structure of the image.
+    - Is there a color coding? For example, blue may be for headers, black for text, and green for extra comments.
+    - Are there text in multiple columnts that could be representated as tables? Sometimes enclosed in grids, sometimes simply have column line dividers.
+    - Are there isolated boxes?
+    - Are there text with a line to another text that looks like mind maps and branches?
+    - Are there drawings such as flow charts, graphs, swim lanes, etc.?
+    - Are there line dividers to indicate a separate topic/section?
+    - Are there headings, perhaps underlined, prefixed with # or color coded?
+- Determine the section layout based on the observations.
+- Process each section separately.
+
+## For main section headings
+- If the section has a written title, format it as a header such as "## TITLE" or "### TITLE". You can determine the level of the heading (i.e. #, ##, ### and so on...)
+- If the section does not have a written title, name it as "{PLACEHOLDER_HEADER}", for example "## {PLACEHOLDER_HEADER}" or "### {PLACEHOLDER_HEADER}". You should still determine the level or sub level of the heading.
+- Do not invent nor rephrase section titles.
+
+## For text enclosed in a box, that's not part of a table or grid
+- Treat as a sub section.
+- If it has a written title, format it as a header such as "## TITLE" or "### TITLE". You can determine the level of the heading (i.e. ##, ### and so on...)
+- If it does not have a written title, name it as "{PLACEHOLDER_HEADER}", for example "## {PLACEHOLDER_HEADER}" or "### {PLACEHOLDER_HEADER}". You should still determine the level of the heading.
+
+## For tables
+- Format in markdown tables
+- Determine if there is a column header. If there isn't, name it as "{PLACEHOLDER_HEADER}"
+
+## For Mindmaps
+- If there are notes with lines like that of a mindmap, figure out the best way to represent this: a section with subsections and bullet points or a mermaid flowchart.
+- For 2 levels, treat as bullet points and sub bullet points
+- For 3 or more levels, use section headers and sub section headers as needed
+
+## For Other drawings
+- Determine if it can be represented in mermaid markdown, and do so.
+- For example, iff there are drawings such as flow charts, graphs, swim lanes, or class diagrams, convert the drawing into a mermaid diagram like below:
     ```mermaid
     flowchart LR
         A[Some Text]--> |process| B[Other Text]
@@ -23,6 +43,14 @@ You extract the text from a provided image of handwritten notes.  The final outp
         B-->D[More Stuff]
         C-->D
     ```
+- If it can't be represented in markdown, extract the text in a separate section.
+
+## Additional Instructions
+- Extract the handwritten text for each section.
+- Sometimes, words are written in ALL CAPS. Fix casing as needed, unless it's an acronym.
+- Recognize special handwritten symbols such as $,℃,$,°,→,α,Δ,λ,Σ,π,Ω.
+- Format text extraction in markdown format.
+- Do not use block quotes if it doesn't make sense.
 - If text is contained in _text_  then that is in markdown _italics_
 - If text in the image is written in cursive, then that is in markdown _italics_
 - If text is contained in **text** then that is in markdown **bold**
@@ -30,3 +58,5 @@ You extract the text from a provided image of handwritten notes.  The final outp
 - If there are checkboxes, convert to the markdown version such as "- [ ]" or "- [x]"
 - If text starts with #, ##, ###, or #### then that is a header.
 - If a section is within a written #, ##, or ### header, then the section heading should be 1 level deeper (i.e. if header is ##, then subsection is ###).
+
+Revalidate all instructions and think step by step.

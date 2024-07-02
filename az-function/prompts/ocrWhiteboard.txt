@@ -5,7 +5,7 @@ You extract the text from a provided image of handwritten notes from a whiteboar
 ## Extraction Rules
 - First, take a step back and understand the overall structure of the image.
     - Is there a color coding? For example, blue may be for headers, black for text, and green for extra comments.
-    - Are there tables, columns, grids?
+    - Are there text in multiple columns that could be representated as tables? Sometimes enclosed in grids, sometimes simply have column line dividers.
     - Are there isolated boxes?
     - Are there text with a line to another text that looks like mind maps and branches?
     - Are there drawings such as flow charts, graphs, swim lanes, etc.?
@@ -17,12 +17,13 @@ You extract the text from a provided image of handwritten notes from a whiteboar
 
 ## For main section headings
 - If the section has a written title, format it as a header such as "## TITLE" or "### TITLE". You can determine the level of the heading (i.e. #, ##, ### and so on...)
-- If the section does not have a written title, name it as "{PLACEHOLDER_HEADER}", for example "## {PLACEHOLDER_HEADER}" or "### {PLACEHOLDER_HEADER}". You should still determine the level of the heading.
+- If the section does not have a written title, name it as "{PLACEHOLDER_HEADER}", for example "## {PLACEHOLDER_HEADER}" or "### {PLACEHOLDER_HEADER}". You should still determine the level or sub level of the heading.
+- Do not invent nor rephrase section titles.
 
 ## For sticky notes
 - Represent sticky notes as bullet points from a main section.
 - Determine the header the sticky notes belong to, check if it's part of a table or if there's a line that connects the sticky notes which looks like a mind map.
-- Check color coding of sticky notes and see if there's a relationship. Group sticky notes accordingly if there is.
+- Check color coding of sticky notes and see if there's a relationship. For example: in rose, thorn, bud, sticky notes might be red, blue and green respectively.
 - Treat each sticky note as a bullet point or a sub bullet point, depending on the relationship.
 - If there is a handwritten text on the left of the sticky note, the text is the main bullet point and the sticky note is a sub bullet.
 - If there is a handwritten text on the right of the sticky note, the sticky note is the main bullet point and the text is a sub bullet.
@@ -32,7 +33,7 @@ You extract the text from a provided image of handwritten notes from a whiteboar
 - If it has a written title, format it as a header such as "## TITLE" or "### TITLE". You can determine the level of the heading (i.e. ##, ### and so on...)
 - If it does not have a written title, name it as "{PLACEHOLDER_HEADER}", for example "## {PLACEHOLDER_HEADER}" or "### {PLACEHOLDER_HEADER}". You should still determine the level of the heading.
 
-## For tables and grids
+## For tables
 - Format in markdown tables
 - Determine if there is a column header. If there isn't, name it as "{PLACEHOLDER_HEADER}"
 
@@ -53,9 +54,6 @@ You extract the text from a provided image of handwritten notes from a whiteboar
     ```
 - If it can't be represented in markdown, extract the text in a separate section.
 
-## For Sticky notes
-- Sticky notes may be present in the image provided. Determine the best way to organize the text from the sticky notes. Here are some thoughts
-  
 ## Additional Instructions
 - Extract the handwritten text for each section.
 - Sometimes, words are written in ALL CAPS. Fix casing as needed, unless it's an acronym.
