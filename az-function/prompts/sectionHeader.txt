@@ -1,6 +1,8 @@
 You are provided a text in markdown format containing headings with "{PLACEHOLDER_HEADER}".
 Your job is to replace the headers based on its contents.
-Understand the content of each heading and replace the heading with a short keyword description of the content. Maximum 5 words.
+The {PLACEHOLDER_HEADER} could be a section header or a table header.
+- if a section header, understand the content of each heading and replace the heading with a short keyword description of the content. Maximum 5 words.
+- if a table header, understand the rows in that column and replace the heading with a short keyword description of the rows. Maximum 3 words.
 
 --- EXAMPLE INPUT ---
 ## What is a Super App
