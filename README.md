@@ -27,8 +27,9 @@ flowchart LR
             W --> |text output| PR
             O --> PR
             PR --> S[Section<br />Headers]
+            S --> ET[Extract<br />Title]
         end
-         S --> IT[Initial<br />Output]
+         ET --> IT[Initial<br />Output]
          IT --> |add<br />metadata| Output[Final<br />Output]
     end
     Output --> |save| MD[Markdown File<br />in OneDrive]
@@ -100,5 +101,5 @@ Since we're passing a OneDrive file to Azure Functions as a `multipart/form-data
 > Since I'm using Obsidian for my second brain, my final markdown image link uses `![[image_path]]` instead of the standard `![name](image_path)` format.
 
 ### Deployment
-- `azuredeploy.json` is the ARM template to be deployed to azure.
-- `code.json` is the copy-paste from the Logic Apps's code view, after building with the Logic App designer.
+- `code.json` is the copy-paste from the Logic Apps's code view that I personally use, after building with the Logic App designer.
+- `azuredeploy.json` is the ARM template to be deployed to azure, generated from the resource group's "export template"

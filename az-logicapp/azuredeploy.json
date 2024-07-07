@@ -1,313 +1,311 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "connections_keyvault_name": {
-            "defaultValue": "keyvault",
-            "type": "String"
-        },
-        "connections_onedrive_name": {
-            "defaultValue": "onedrive",
-            "type": "String"
-        },
-        "workflows_raznotesgpt_name": {
-            "defaultValue": "raznotesgpt",
-            "type": "String"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "connections_keyvault_name": {
+      "defaultValue": "keyvault",
+      "type": "String"
     },
-    "variables": {},
-    "resources": [
-        {
-            "type": "Microsoft.Web/connections",
-            "apiVersion": "2016-06-01",
-            "name": "[parameters('connections_keyvault_name')]",
-            "location": "southeastasia",
-            "kind": "V1",
-            "properties": {
-                "displayName": "[parameters('connections_keyvault_name')]",
-                "statuses": [
-                    {
-                        "status": "Ready"
-                    }
-                ],
-                "customParameterValues": {},
-                "createdTime": "2024-07-01T03:47:38.6714634Z",
-                "changedTime": "2024-07-01T03:47:38.6714634Z",
-                "api": {
-                    "name": "[parameters('connections_keyvault_name')]",
-                    "displayName": "Azure Key Vault",
-                    "description": "Azure Key Vault is a service to securely store and access secrets.",
-                    "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1694/1.0.1694.3752/', parameters('connections_keyvault_name'), '/icon.png')]",
-                    "brandColor": "#0079d6",
-                    "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/',parameters('connections_keyvault_name'))]",
-                    "type": "Microsoft.Web/locations/managedApis"
-                },
-                "testLinks": []
-            }
+    "connections_onedrive_name": {
+      "defaultValue": "onedrive",
+      "type": "String"
+    },
+    "workflows_raznotesgpt_name": {
+      "defaultValue": "raznotesgpt",
+      "type": "String"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "type": "Microsoft.Web/connections",
+      "apiVersion": "2016-06-01",
+      "name": "[parameters('connections_keyvault_name')]",
+      "location": "southeastasia",
+      "kind": "V1",
+      "properties": {
+        "displayName": "[parameters('connections_keyvault_name')]",
+        "statuses": [
+          {
+            "status": "Ready"
+          }
+        ],
+        "customParameterValues": {},
+        "createdTime": "2024-07-01T03:47:38.6714634Z",
+        "changedTime": "2024-07-01T03:47:38.6714634Z",
+        "api": {
+          "name": "[parameters('connections_keyvault_name')]",
+          "displayName": "Azure Key Vault",
+          "description": "Azure Key Vault is a service to securely store and access secrets.",
+          "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1694/1.0.1694.3752/', parameters('connections_keyvault_name'), '/icon.png')]",
+          "brandColor": "#0079d6",
+          "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/',parameters('connections_keyvault_name'))]",
+          "type": "Microsoft.Web/locations/managedApis"
         },
-        {
-            "type": "Microsoft.Web/connections",
-            "apiVersion": "2016-06-01",
-            "name": "[parameters('connections_onedrive_name')]",
-            "location": "southeastasia",
-            "kind": "V1",
-            "properties": {
-                "displayName": "john.doe@outlook.com",
-                "statuses": [
-                    {
-                        "status": "Connected"
-                    }
-                ],
-                "customParameterValues": {},
-                "nonSecretParameterValues": {},
-                "createdTime": "2022-12-07T09:51:06.0400598Z",
-                "changedTime": "2024-07-01T04:29:37.6515824Z",
-                "api": {
-                    "name": "[parameters('connections_onedrive_name')]",
-                    "displayName": "OneDrive",
-                    "description": "Connect to OneDrive to manage your files. You can perform various actions such as upload, update, get, and delete on files in OneDrive.",
-                    "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1689/1.0.1689.3710/', parameters('connections_onedrive_name'), '/icon.png')]",
-                    "brandColor": "#0078D4",
-                    "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/',parameters('connections_onedrive_name'))]",
-                    "type": "Microsoft.Web/locations/managedApis"
-                },
-                "testLinks": [
-                    {
-                        "requestUri": "[concat('https://management.azure.com:443/subscriptions/',subscription().subscriptionId,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.Web/connections/', parameters('connections_onedrive_name'), '/extensions/proxy/testconnection?api-version=2016-06-01')]",
-                        "method": "get"
-                    }
-                ]
-            }
+        "testLinks": []
+      }
+    },
+    {
+      "type": "Microsoft.Web/connections",
+      "apiVersion": "2016-06-01",
+      "name": "[parameters('connections_onedrive_name')]",
+      "location": "southeastasia",
+      "kind": "V1",
+      "properties": {
+        "displayName": "john.doe@outlook.com",
+        "statuses": [
+          {
+            "status": "Connected"
+          }
+        ],
+        "customParameterValues": {},
+        "nonSecretParameterValues": {},
+        "createdTime": "2022-12-07T09:51:06.0400598Z",
+        "changedTime": "2024-07-07T02:50:29.1603284Z",
+        "api": {
+          "name": "[parameters('connections_onedrive_name')]",
+          "displayName": "OneDrive",
+          "description": "Connect to OneDrive to manage your files. You can perform various actions such as upload, update, get, and delete on files in OneDrive.",
+          "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1689/1.0.1689.3710/', parameters('connections_onedrive_name'), '/icon.png')]",
+          "brandColor": "#0078D4",
+          "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/',parameters('connections_onedrive_name'))]",
+          "type": "Microsoft.Web/locations/managedApis"
         },
-        {
-            "type": "Microsoft.Logic/workflows",
-            "apiVersion": "2017-07-01",
-            "name": "[parameters('workflows_raznotesgpt_name')]",
-            "location": "southeastasia",
-            "dependsOn": [
-                "[resourceId('Microsoft.Web/connections', parameters('connections_onedrive_name'))]",
-                "[resourceId('Microsoft.Web/connections', parameters('connections_keyvault_name'))]"
-            ],
-            "tags": {
-                "intent": "demo",
-                "solutionarea": "apps"
-            },
-            "identity": {
-                "type": "SystemAssigned"
-            },
-            "properties": {
-                "state": "Enabled",
-                "definition": {
-                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
-                    "contentVersion": "1.0.0.0",
-                    "parameters": {
-                        "$connections": {
-                            "defaultValue": {},
-                            "type": "Object"
-                        }
-                    },
-                    "triggers": {
-                        "When_a_file_is_created": {
-                            "recurrence": {
-                                "frequency": "Minute",
-                                "interval": 5
-                            },
-                            "evaluatedRecurrence": {
-                                "frequency": "Minute",
-                                "interval": 5
-                            },
-                            "metadata": {
-                                "A8546FE4B5BBEFDD!93368": "/Handwritten Notes"
-                            },
-                            "type": "ApiConnection",
-                            "inputs": {
-                                "host": {
-                                    "connection": {
-                                        "name": "@parameters('$connections')['onedrive']['connectionId']"
-                                    }
-                                },
-                                "method": "get",
-                                "path": "/datasets/default/triggers/onnewfilev2",
-                                "queries": {
-                                    "folderId": "A8546FE4B5BBEFDD!93368",
-                                    "includeSubfolders": true,
-                                    "inferContentType": true,
-                                    "simulate": false
-                                }
-                            }
-                        }
-                    },
-                    "actions": {
-                        "Compose_-_File_Name_Prefix": {
-                            "runAfter": {
-                                "Parse_JSON_-_Get_ExtractNotes_Response": [
-                                    "Succeeded"
-                                ]
-                            },
-                            "type": "Compose",
-                            "inputs": "@{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyyMMdd-HHmmss')}-"
-                        },
-                        "Copy_file": {
-                            "runAfter": {
-                                "Compose_-_File_Name_Prefix": [
-                                    "Succeeded"
-                                ]
-                            },
-                            "type": "ApiConnection",
-                            "inputs": {
-                                "host": {
-                                    "connection": {
-                                        "name": "@parameters('$connections')['onedrive']['connectionId']"
-                                    }
-                                },
-                                "method": "post",
-                                "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(triggerOutputs()['headers']['x-ms-file-id']))}/copy",
-                                "queries": {
-                                    "destination": "/second-brain/second-brain/_fleeting-notes/@{outputs('Compose_-_File_Name_Prefix')}@{body('Get_file_metadata')?['Name']}",
-                                    "overwrite": true
-                                }
-                            }
-                        },
-                        "Create_markdown_file": {
-                            "runAfter": {
-                                "Copy_file": [
-                                    "Succeeded"
-                                ]
-                            },
-                            "type": "ApiConnection",
-                            "inputs": {
-                                "host": {
-                                    "connection": {
-                                        "name": "@parameters('$connections')['onedrive']['connectionId']"
-                                    }
-                                },
-                                "method": "post",
-                                "body": "---\nnote-type: @{body('Parse_JSON_-_Get_ExtractNotes_Response')?['noteType']}\ncreated-date: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\nlast-updated: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\n---\n# @{body('Get_file_metadata')?['Name']}\n![[@{body('Copy_file')?['Name']}]]\n\n@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedText']}",
-                                "path": "/datasets/default/files",
-                                "queries": {
-                                    "folderPath": "/second-brain/second-brain/_fleeting-notes",
-                                    "name": "@{outputs('Compose_-_File_Name_Prefix')}@{body('Get_file_metadata')?['NameNoExt']}.md"
-                                }
-                            },
-                            "runtimeConfiguration": {
-                                "contentTransfer": {
-                                    "transferMode": "Chunked"
-                                }
-                            }
-                        },
-                        "Get_file_metadata": {
-                            "runAfter": {},
-                            "type": "ApiConnection",
-                            "inputs": {
-                                "host": {
-                                    "connection": {
-                                        "name": "@parameters('$connections')['onedrive']['connectionId']"
-                                    }
-                                },
-                                "method": "get",
-                                "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(triggerOutputs()['headers']['x-ms-file-id']))}"
-                            }
-                        },
-                        "Parse_JSON_-_Get_ExtractNotes_Response": {
-                            "runAfter": {
-                                "HTTP_-_Extract_Notes": [
-                                    "Succeeded"
-                                ]
-                            },
-                            "type": "ParseJson",
-                            "inputs": {
-                                "content": "@body('HTTP_-_Extract_Notes')",
-                                "schema": {
-                                    "properties": {
-                                        "extractedText": {
-                                            "type": "string"
-                                        },
-                                        "noteType": {
-                                            "type": "string"
-                                        }
-                                    },
-                                    "type": "object"
-                                }
-                            }
-                        },
-                        "HTTP_-_Extract_Notes": {
-                            "runAfter": {
-                                "Get_Functions_Secret": [
-                                    "Succeeded"
-                                ]
-                            },
-                            "type": "Http",
-                            "inputs": {
-                                "uri": "https://razfunction.azurewebsites.net/api/ExtractNotes?code=@{body('Get_Functions_Secret')?['value']}",
-                                "method": "POST",
-                                "body": {
-                                    "$content-type": "multipart/form-data",
-                                    "$multipart": [
-                                        {
-                                            "body": "@triggerBody()",
-                                            "headers": {
-                                                "Content-Disposition": "form-data; name=image; filename=\"@{triggerOutputs()['headers']['x-ms-file-name-encoded']}\"",
-                                                "Content-Type": "@{triggerOutputs()['headers']['Content-Type']}"
-                                            }
-                                        }
-                                    ]
-                                }
-                            },
-                            "runtimeConfiguration": {
-                                "contentTransfer": {
-                                    "transferMode": "Chunked"
-                                }
-                            }
-                        },
-                        "Get_Functions_Secret": {
-                            "runAfter": {
-                                "Get_file_metadata": [
-                                    "Succeeded"
-                                ]
-                            },
-                            "type": "ApiConnection",
-                            "inputs": {
-                                "host": {
-                                    "connection": {
-                                        "name": "@parameters('$connections')['keyvault']['connectionId']"
-                                    }
-                                },
-                                "method": "get",
-                                "path": "/secrets/@{encodeURIComponent('razfunction-defaulthostkey')}/value"
-                            },
-                            "runtimeConfiguration": {
-                                "secureData": {
-                                    "properties": [
-                                        "outputs"
-                                    ]
-                                }
-                            }
-                        }
-                    },
-                    "outputs": {}
+        "testLinks": [
+          {
+            "requestUri": "[concat('https://management.azure.com:443/subscriptions/',subscription().subscriptionId,'/resourceGroups/',resourceGroup().name,'/providers/Microsoft.Web/connections/', parameters('connections_onedrive_name'), '/extensions/proxy/testconnection?api-version=2016-06-01')]",
+            "method": "get"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2017-07-01",
+      "name": "[parameters('workflows_raznotesgpt_name')]",
+      "location": "southeastasia",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/connections', parameters('connections_onedrive_name'))]",
+        "[resourceId('Microsoft.Web/connections', parameters('connections_keyvault_name'))]"
+      ],
+      "tags": {
+        "intent": "demo",
+        "solutionarea": "apps"
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "$connections": {
+              "defaultValue": {},
+              "type": "Object"
+            }
+          },
+          "triggers": {
+            "When_a_file_is_created": {
+              "recurrence": {
+                "frequency": "Minute",
+                "interval": 5
+              },
+              "evaluatedRecurrence": {
+                "frequency": "Minute",
+                "interval": 5
+              },
+              "metadata": {
+                "A8546FE4B5BBEFDD!93368": "/Handwritten Notes",
+                "6e202211-2856-4d17-9ded-5beb8b8626b0": "/"
+              },
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['onedrive']['connectionId']"
+                  }
                 },
-                "parameters": {
-                    "$connections": {
-                        "value": {
-                            "onedrive": {
-                                "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/onedrive')]",
-                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_onedrive_name'))]",
-                                "connectionName": "onedrive"
-                            },
-                            "keyvault": {
-                                "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/keyvault')]",
-                                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_keyvault_name'))]",
-                                "connectionName": "keyvault",
-                                "connectionProperties": {
-                                    "authentication": {
-                                        "type": "ManagedServiceIdentity"
-                                    }
-                                }
-                            }
-                        }
-                    }
+                "method": "get",
+                "path": "/datasets/default/triggers/onnewfilev2",
+                "queries": {
+                  "folderId": "A8546FE4B5BBEFDD!93368",
+                  "includeSubfolders": true,
+                  "inferContentType": true,
+                  "simulate": false
                 }
+              }
             }
+          },
+          "actions": {
+            "Copy_file": {
+              "runAfter": {
+                "Parse_JSON_-_Get_ExtractNotes_Response": ["Succeeded"]
+              },
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['onedrive']['connectionId']"
+                  }
+                },
+                "method": "post",
+                "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(triggerOutputs()['headers']['x-ms-file-id']))}/copy",
+                "queries": {
+                  "destination": "/second-brain/second-brain/_fleeting-notes/@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedTitle']}.@{variables('imageFileExtension')}",
+                  "overwrite": true
+                }
+              }
+            },
+            "Create_markdown_file": {
+              "runAfter": {
+                "Copy_file": ["Succeeded"]
+              },
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['onedrive']['connectionId']"
+                  }
+                },
+                "method": "post",
+                "body": "---\nnote-type: @{body('Parse_JSON_-_Get_ExtractNotes_Response')?['noteType']}\ncreated-date: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\nlast-updated: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\n---\n![[@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedTitle']}.@{variables('imageFileExtension')}]]\n\n@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedText']}",
+                "path": "/datasets/default/files",
+                "queries": {
+                  "folderPath": "/second-brain/second-brain/_fleeting-notes",
+                  "name": "@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedTitle']}.md"
+                }
+              },
+              "runtimeConfiguration": {
+                "contentTransfer": {
+                  "transferMode": "Chunked"
+                }
+              }
+            },
+            "Get_file_metadata": {
+              "runAfter": {},
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['onedrive']['connectionId']"
+                  }
+                },
+                "method": "get",
+                "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(triggerOutputs()['headers']['x-ms-file-id']))}"
+              }
+            },
+            "Parse_JSON_-_Get_ExtractNotes_Response": {
+              "runAfter": {
+                "HTTP_-_Extract_Notes": ["Succeeded"]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@body('HTTP_-_Extract_Notes')",
+                "schema": {
+                  "properties": {
+                    "extractedTitle": {
+                      "type": "string"
+                    },
+                    "extractedText": {
+                      "type": "string"
+                    },
+                    "noteType": {
+                      "type": "string"
+                    }
+                  },
+                  "type": "object"
+                }
+              }
+            },
+            "HTTP_-_Extract_Notes": {
+              "runAfter": {
+                "Get_Functions_Secret": ["Succeeded"]
+              },
+              "type": "Http",
+              "inputs": {
+                "uri": "https://razpython.azurewebsites.net/api/ExtractNotes?code=@{body('Get_Functions_Secret')?['value']}",
+                "method": "POST",
+                "body": {
+                  "$content-type": "multipart/form-data",
+                  "$multipart": [
+                    {
+                      "body": "@triggerBody()",
+                      "headers": {
+                        "Content-Disposition": "form-data; name=image; filename=\"@{triggerOutputs()['headers']['x-ms-file-name-encoded']}\"",
+                        "Content-Type": "@{triggerOutputs()['headers']['Content-Type']}"
+                      }
+                    }
+                  ]
+                }
+              },
+              "runtimeConfiguration": {
+                "contentTransfer": {
+                  "transferMode": "Chunked"
+                }
+              }
+            },
+            "Get_Functions_Secret": {
+              "runAfter": {
+                "Initialize_variable_-_imageFileExtension": ["Succeeded"]
+              },
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['keyvault']['connectionId']"
+                  }
+                },
+                "method": "get",
+                "path": "/secrets/@{encodeURIComponent('razpython-defaulthostkey')}/value"
+              },
+              "runtimeConfiguration": {
+                "secureData": {
+                  "properties": ["outputs"]
+                }
+              }
+            },
+            "Initialize_variable_-_imageFileExtension": {
+              "runAfter": {
+                "Get_file_metadata": ["Succeeded"]
+              },
+              "type": "InitializeVariable",
+              "inputs": {
+                "variables": [
+                  {
+                    "name": "imageFileExtension",
+                    "type": "string",
+                    "value": "@{last(split(body('Get_file_metadata')?['Name'],'.'))}"
+                  }
+                ]
+              }
+            }
+          },
+          "outputs": {}
+        },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "onedrive": {
+                "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/onedrive')]",
+                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_onedrive_name'))]",
+                "connectionName": "onedrive"
+              },
+              "keyvault": {
+                "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/keyvault')]",
+                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_keyvault_name'))]",
+                "connectionName": "keyvault",
+                "connectionProperties": {
+                  "authentication": {
+                    "type": "ManagedServiceIdentity"
+                  }
+                }
+              }
+            }
+          }
         }
-    ]
+      }
+    }
+  ]
 }

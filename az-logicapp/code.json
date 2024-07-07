@@ -2,15 +2,6 @@
     "definition": {
         "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
         "actions": {
-            "Compose_-_File_Name_Prefix": {
-                "inputs": "@{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyyMMdd-HHmmss')}-",
-                "runAfter": {
-                    "Parse_JSON_-_Get_ExtractNotes_Response": [
-                        "Succeeded"
-                    ]
-                },
-                "type": "Compose"
-            },
             "Copy_file": {
                 "inputs": {
                     "host": {
@@ -21,12 +12,12 @@
                     "method": "post",
                     "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(triggerOutputs()['headers']['x-ms-file-id']))}/copy",
                     "queries": {
-                        "destination": "/second-brain/second-brain/_fleeting-notes/@{outputs('Compose_-_File_Name_Prefix')}@{body('Get_file_metadata')?['Name']}",
+                        "destination": "/second-brain/second-brain/_fleeting-notes/@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedTitle']}.@{variables('imageFileExtension')}",
                         "overwrite": true
                     }
                 },
                 "runAfter": {
-                    "Compose_-_File_Name_Prefix": [
+                    "Parse_JSON_-_Get_ExtractNotes_Response": [
                         "Succeeded"
                     ]
                 },
@@ -34,7 +25,7 @@
             },
             "Create_markdown_file": {
                 "inputs": {
-                    "body": "---\nnote-type: @{body('Parse_JSON_-_Get_ExtractNotes_Response')?['noteType']}\ncreated-date: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\nlast-updated: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\n---\n# @{body('Get_file_metadata')?['Name']}\n![{@{body('Get_file_metadata')?['Name']}}](@{body('Copy_file')?['Name']})\n\n@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedText']}",
+                    "body": "---\nnote-type: @{body('Parse_JSON_-_Get_ExtractNotes_Response')?['noteType']}\ncreated-date: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\nlast-updated: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\n---\n![[@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedTitle']}.@{variables('imageFileExtension')}]]\n\n@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedText']}",
                     "host": {
                         "connection": {
                             "name": "@parameters('$connections')['onedrive']['connectionId']"
@@ -44,7 +35,7 @@
                     "path": "/datasets/default/files",
                     "queries": {
                         "folderPath": "/second-brain/second-brain/_fleeting-notes",
-                        "name": "@{outputs('Compose_-_File_Name_Prefix')}@{body('Get_file_metadata')?['NameNoExt']}.md"
+                        "name": "@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedTitle']}.md"
                     }
                 },
                 "runAfter": {
@@ -70,7 +61,7 @@
                     "path": "/secrets/@{encodeURIComponent('razpython-defaulthostkey')}/value"
                 },
                 "runAfter": {
-                    "Get_file_metadata": [
+                    "Initialize_variable_-_imageFileExtension": [
                         "Succeeded"
                     ]
                 },
@@ -125,12 +116,32 @@
                 },
                 "type": "Http"
             },
+            "Initialize_variable_-_imageFileExtension": {
+                "inputs": {
+                    "variables": [
+                        {
+                            "name": "imageFileExtension",
+                            "type": "string",
+                            "value": "@{last(split(body('Get_file_metadata')?['Name'],'.'))}"
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Get_file_metadata": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "InitializeVariable"
+            },
             "Parse_JSON_-_Get_ExtractNotes_Response": {
                 "inputs": {
                     "content": "@body('HTTP_-_Extract_Notes')",
                     "schema": {
                         "properties": {
                             "extractedText": {
+                                "type": "string"
+                            },
+                            "extractedTitle": {
                                 "type": "string"
                             },
                             "noteType": {
@@ -160,7 +171,7 @@
             "When_a_file_is_created": {
                 "evaluatedRecurrence": {
                     "frequency": "Minute",
-                    "interval": 5
+                    "interval": 1
                 },
                 "inputs": {
                     "host": {
@@ -178,11 +189,12 @@
                     }
                 },
                 "metadata": {
+                    "6e202211-2856-4d17-9ded-5beb8b8626b0": "/",
                     "A8546FE4B5BBEFDD!93368": "/Handwritten Notes"
                 },
                 "recurrence": {
                     "frequency": "Minute",
-                    "interval": 5
+                    "interval": 1
                 },
                 "type": "ApiConnection"
             }

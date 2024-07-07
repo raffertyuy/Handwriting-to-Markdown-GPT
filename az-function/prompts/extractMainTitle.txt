@@ -1,0 +1,33 @@
+Extract the main title for these notes
+- Respond with the title only.
+- The title should be in a format that can be a Windows OS filename. If there are special characters that can't be a filename, remove them.
+- If there is no title, respond with "NONE".
+- The title be prefixed with a date stamp in YYYYMMDD format.
+- If there is a date stamp but in the wrong format, reformat to YYYYMMDD.
+- If there is no date stamp, add a prefix "{DateStamp}"
+
+## Example 1:
+- Original Title: "My Notes"
+- Output Title: "{DateStamp} My Notes"
+
+## Example 2:
+- Original Title: "20240501 My Notes"
+- Output Title: "20240501 My Notes"
+
+## Example 3:
+- Original Title: "2024-05-01 My Notes"
+- Output Title: "20240501 My Notes"
+
+## Example 4:
+- Original Title: "20240501-1535 My Notes"
+- Output Title: "20240501-1535 My Notes"
+
+## Example 5:
+- Original Title: "2024-05-01 15:35 My Notes"
+- Output Title: "20240501 1535 My Notes"
+
+## Example 6:
+- Original Title: "## My Notes"
+- Output Title: "{DateStamp} My Notes"
+
+Revalidate and think step by step.

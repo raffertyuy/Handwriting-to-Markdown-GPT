@@ -20,23 +20,22 @@ Top priorities
 - How to integrate with Azure
 - Continuous Integration/Continuous Deployment?
 
-### Schedule
+### Note:
+- This is written in markdown
+- I should include drawings
 
+### Schedule
 | July         | August         | September     |
 |--------------|----------------|---------------|
 | - Comms      | - Enablement   | - Execution   |
 | - Meetings   | - Workshops    | - Metrics     |
 
-### Notes
-
-Note:
-- This is written in markdown
-- I should include drawings
-
 ```mermaid
 flowchart LR
-    Notes --> |Code| DevTest --> RT[Reusable Template]
-    Notes --> Documentation
+    Notes --> Code
+    Code --> DevTest[Dev Test]
+    DevTest --> ReusableTemplate[Reusable Template]
+    Code --> Documentation
 ```
 
 ^ Hope this makes sense?
