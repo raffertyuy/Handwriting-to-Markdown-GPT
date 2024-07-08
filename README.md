@@ -9,11 +9,13 @@ In this implementation, Azure OpenAI `gpt-4o` is used instead.
 Also see this [blog post](https://raffertyuy.com/raztype/handwriting-to-second-brain-gpt/)
 
 ## Solution Flow
-This solution will:
-
-- Watch for new files in a specific OneDrive folder (using Azure Logic Apps)
-- Process the files using GPT-4o (through a Function App)
-- Copy the image and save a new markdown file output in a destination OneDrive folder.
+This solution is using Azure Logic Apps with the following flow:
+1. Watch for new files in a specific OneDrive folder
+2. Check for GPT-4o supported image formats
+   - if the filetype is PDF, convert to JPG using [OneDrive - Convert File](https://learn.microsoft.com/en-us/connectors/onedrive/#convert-file-(preview)) (limited to the first page of the PDF file).
+   - if the filetype is not supported, skip.
+3. Extract the text from the image file using GPT-4o (through a Function App).
+4. Copy the image and save a new markdown file output in a destination OneDrive folder.
 
 ```mermaid
 flowchart LR
@@ -34,22 +36,6 @@ flowchart LR
     end
     Output --> |save| MD[Markdown File<br />in OneDrive]
 ```
-
-## Limitations / TODOs
-- [ ] GPT-4o only accepts image files. Add error handling for unsupported file types.
-- [ ] Add a new Azure Function for converting PDF to image files using this sample code (with revisions to save individual image files to OneDrive)
-    ```python
-    # import module
-    from pdf2image import convert_from_path
-
-    # Store Pdf with convert_from_path function
-    images = convert_from_path('example.pdf')
-
-    for i in range(len(images)):
-        # Save pages as images in the pdf
-        images[i].save('page'+ str(i) +'.jpg', 'JPEG')
-    ```
-- [ ] Using [Prompt Flow](https://learn.microsoft.com/en-us/azure/ai-studio/how-to/prompt-flow) for better tracing and evaluation of prompts.
 
 > [!NOTE]
 > Prompt Flow was previously attempted, but the following gaps were encountered (as of 2024-06-28):
@@ -101,5 +87,5 @@ Since we're passing a OneDrive file to Azure Functions as a `multipart/form-data
 > Since I'm using Obsidian for my second brain, my final markdown image link uses `![[image_path]]` instead of the standard `![name](image_path)` format.
 
 ### Deployment
-- `code.json` is the copy-paste from the Logic Apps's code view that I personally use, after building with the Logic App designer.
+- `code.json` is the copy-pasted code from the Logic Apps's code view, for reference. This is the exact code that I personally use after using the Logic App designer.
 - `azuredeploy.json` is the ARM template to be deployed to azure, generated from the resource group's "export template"
