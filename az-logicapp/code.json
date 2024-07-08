@@ -2,6 +2,162 @@
     "definition": {
         "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
         "actions": {
+            "Check_if_Supported_Image": {
+                "actions": {},
+                "else": {
+                    "actions": {
+                        "Check_if_PDF": {
+                            "actions": {
+                                "Convert_file": {
+                                    "inputs": {
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['onedrive']['connectionId']"
+                                            }
+                                        },
+                                        "method": "get",
+                                        "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(body('Get_file_metadata')?['Id']))}/convert",
+                                        "queries": {
+                                            "type": "JPG"
+                                        }
+                                    },
+                                    "type": "ApiConnection"
+                                },
+                                "Create_JPG_file": {
+                                    "inputs": {
+                                        "body": "@body('Convert_file')",
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['onedrive']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/datasets/default/files",
+                                        "queries": {
+                                            "folderPath": "/Handwritten Notes",
+                                            "name": "@{body('Get_file_metadata')?['NameNoExt']}.jpg"
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Convert_file": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "runtimeConfiguration": {
+                                        "contentTransfer": {
+                                            "transferMode": "Chunked"
+                                        }
+                                    },
+                                    "type": "ApiConnection"
+                                },
+                                "Move_converted_file": {
+                                    "inputs": {
+                                        "host": {
+                                            "connection": {
+                                                "name": "@parameters('$connections')['onedrive']['connectionId']"
+                                            }
+                                        },
+                                        "method": "post",
+                                        "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(body('Get_file_metadata')?['Id']))}/move",
+                                        "queries": {
+                                            "destination": "/Handwritten Notes/processed/@{body('Get_file_metadata')?['Name']}",
+                                            "overwrite": true
+                                        }
+                                    },
+                                    "runAfter": {
+                                        "Create_JPG_file": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "ApiConnection"
+                                },
+                                "Terminate_-_Skip": {
+                                    "inputs": {
+                                        "runStatus": "Cancelled"
+                                    },
+                                    "runAfter": {
+                                        "Move_converted_file": [
+                                            "Succeeded"
+                                        ]
+                                    },
+                                    "type": "Terminate"
+                                }
+                            },
+                            "else": {
+                                "actions": {
+                                    "Terminate_-_Unsupported": {
+                                        "inputs": {
+                                            "runError": {
+                                                "code": "400",
+                                                "message": "Image type is not supported. Supported types: jpg, gif, png, bmp, tiff."
+                                            },
+                                            "runStatus": "Failed"
+                                        },
+                                        "type": "Terminate"
+                                    }
+                                }
+                            },
+                            "expression": {
+                                "and": [
+                                    {
+                                        "equals": [
+                                            "",
+                                            ""
+                                        ]
+                                    }
+                                ]
+                            },
+                            "type": "If"
+                        }
+                    }
+                },
+                "expression": {
+                    "or": [
+                        {
+                            "equals": [
+                                "@variables('imageFileExtension')",
+                                "jpg"
+                            ]
+                        },
+                        {
+                            "equals": [
+                                "@variables('imageFileExtension')",
+                                "jpeg"
+                            ]
+                        },
+                        {
+                            "equals": [
+                                "@variables('imageFileExtension')",
+                                "png"
+                            ]
+                        },
+                        {
+                            "equals": [
+                                "@variables('imageFileExtension')",
+                                "gif"
+                            ]
+                        },
+                        {
+                            "equals": [
+                                "@variables('imageFileExtension')",
+                                "bmp"
+                            ]
+                        },
+                        {
+                            "equals": [
+                                "@variables('imageFileExtension')",
+                                "tiff"
+                            ]
+                        }
+                    ]
+                },
+                "runAfter": {
+                    "Initialize_variable_-_imageFileExtension": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "If"
+            },
             "Copy_file": {
                 "inputs": {
                     "host": {
@@ -10,7 +166,7 @@
                         }
                     },
                     "method": "post",
-                    "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(triggerOutputs()['headers']['x-ms-file-id']))}/copy",
+                    "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(body('Get_file_metadata')?['Id']))}/copy",
                     "queries": {
                         "destination": "/second-brain/second-brain/_fleeting-notes/@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedTitle']}.@{variables('imageFileExtension')}",
                         "overwrite": true
@@ -61,7 +217,7 @@
                     "path": "/secrets/@{encodeURIComponent('razpython-defaulthostkey')}/value"
                 },
                 "runAfter": {
-                    "Initialize_variable_-_imageFileExtension": [
+                    "Check_if_Supported_Image": [
                         "Succeeded"
                     ]
                 },
@@ -95,7 +251,7 @@
                             {
                                 "body": "@triggerBody()",
                                 "headers": {
-                                    "Content-Disposition": "form-data; name=image; filename=\"@{triggerOutputs()['headers']['x-ms-file-name-encoded']}\"",
+                                    "Content-Disposition": "form-data; name=image; filename=\"@{body('Get_file_metadata')?['Name']}\"",
                                     "Content-Type": "@{triggerOutputs()['headers']['Content-Type']}"
                                 }
                             }
@@ -133,6 +289,27 @@
                 },
                 "type": "InitializeVariable"
             },
+            "Move_Processed_File": {
+                "inputs": {
+                    "host": {
+                        "connection": {
+                            "name": "@parameters('$connections')['onedrive']['connectionId']"
+                        }
+                    },
+                    "method": "post",
+                    "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(body('Get_file_metadata')?['Id']))}/move",
+                    "queries": {
+                        "destination": "/Handwritten Notes/processed/@{body('Get_file_metadata')?['Name']}",
+                        "overwrite": true
+                    }
+                },
+                "runAfter": {
+                    "Create_markdown_file": [
+                        "Succeeded"
+                    ]
+                },
+                "type": "ApiConnection"
+            },
             "Parse_JSON_-_Get_ExtractNotes_Response": {
                 "inputs": {
                     "content": "@body('HTTP_-_Extract_Notes')",
@@ -168,10 +345,10 @@
             }
         },
         "triggers": {
-            "When_a_file_is_created": {
+            "When_a_file_is_modified": {
                 "evaluatedRecurrence": {
                     "frequency": "Minute",
-                    "interval": 1
+                    "interval": 3
                 },
                 "inputs": {
                     "host": {
@@ -180,21 +357,21 @@
                         }
                     },
                     "method": "get",
-                    "path": "/datasets/default/triggers/onnewfilev2",
+                    "path": "/datasets/default/triggers/onupdatedfilev2",
                     "queries": {
                         "folderId": "A8546FE4B5BBEFDD!93368",
-                        "includeSubfolders": true,
+                        "includeFileContent": true,
+                        "includeSubfolders": false,
                         "inferContentType": true,
                         "simulate": false
                     }
                 },
                 "metadata": {
-                    "6e202211-2856-4d17-9ded-5beb8b8626b0": "/",
                     "A8546FE4B5BBEFDD!93368": "/Handwritten Notes"
                 },
                 "recurrence": {
                     "frequency": "Minute",
-                    "interval": 1
+                    "interval": 3
                 },
                 "type": "ApiConnection"
             }

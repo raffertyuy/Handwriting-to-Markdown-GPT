@@ -37,7 +37,7 @@
           "name": "[parameters('connections_keyvault_name')]",
           "displayName": "Azure Key Vault",
           "description": "Azure Key Vault is a service to securely store and access secrets.",
-          "iconUri": "[concat('https://connectoricons-prod.azureedge.net/releases/v1.0.1694/1.0.1694.3752/', parameters('connections_keyvault_name'), '/icon.png')]",
+          "iconUri": "[concat('https://connectoricons-prod.azureedge.net/u/jayawan/releases/v1.0.1694/1.0.1694.3753/', parameters('connections_keyvault_name'), '/icon.png')]",
           "brandColor": "#0079d6",
           "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/',parameters('connections_keyvault_name'))]",
           "type": "Microsoft.Web/locations/managedApis"
@@ -107,18 +107,17 @@
             }
           },
           "triggers": {
-            "When_a_file_is_created": {
+            "When_a_file_is_modified": {
               "recurrence": {
-                "frequency": "Minute",
-                "interval": 5
+                "interval": 3,
+                "frequency": "Minute"
               },
               "evaluatedRecurrence": {
-                "frequency": "Minute",
-                "interval": 5
+                "interval": 3,
+                "frequency": "Minute"
               },
               "metadata": {
-                "A8546FE4B5BBEFDD!93368": "/Handwritten Notes",
-                "6e202211-2856-4d17-9ded-5beb8b8626b0": "/"
+                "A8546FE4B5BBEFDD!93368": "/Handwritten Notes"
               },
               "type": "ApiConnection",
               "inputs": {
@@ -128,11 +127,12 @@
                   }
                 },
                 "method": "get",
-                "path": "/datasets/default/triggers/onnewfilev2",
+                "path": "/datasets/default/triggers/onupdatedfilev2",
                 "queries": {
                   "folderId": "A8546FE4B5BBEFDD!93368",
-                  "includeSubfolders": true,
+                  "includeSubfolders": false,
                   "inferContentType": true,
+                  "includeFileContent": true,
                   "simulate": false
                 }
               }
@@ -151,7 +151,7 @@
                   }
                 },
                 "method": "post",
-                "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(triggerOutputs()['headers']['x-ms-file-id']))}/copy",
+                "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(body('Get_file_metadata')?['Id']))}/copy",
                 "queries": {
                   "destination": "/second-brain/second-brain/_fleeting-notes/@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedTitle']}.@{variables('imageFileExtension')}",
                   "overwrite": true
@@ -233,7 +233,7 @@
                     {
                       "body": "@triggerBody()",
                       "headers": {
-                        "Content-Disposition": "form-data; name=image; filename=\"@{triggerOutputs()['headers']['x-ms-file-name-encoded']}\"",
+                        "Content-Disposition": "form-data; name=image; filename=\"@{body('Get_file_metadata')?['Name']}\"",
                         "Content-Type": "@{triggerOutputs()['headers']['Content-Type']}"
                       }
                     }
@@ -248,7 +248,7 @@
             },
             "Get_Functions_Secret": {
               "runAfter": {
-                "Initialize_variable_-_imageFileExtension": ["Succeeded"]
+                "Check_if_Supported_Image": ["Succeeded"]
               },
               "type": "ApiConnection",
               "inputs": {
@@ -280,6 +280,152 @@
                   }
                 ]
               }
+            },
+            "Check_if_Supported_Image": {
+              "actions": {},
+              "runAfter": {
+                "Initialize_variable_-_imageFileExtension": ["Succeeded"]
+              },
+              "else": {
+                "actions": {
+                  "Check_if_PDF": {
+                    "actions": {
+                      "Convert_file": {
+                        "type": "ApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connection": {
+                              "name": "@parameters('$connections')['onedrive']['connectionId']"
+                            }
+                          },
+                          "method": "get",
+                          "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(body('Get_file_metadata')?['Id']))}/convert",
+                          "queries": {
+                            "type": "JPG"
+                          }
+                        }
+                      },
+                      "Terminate_-_Skip": {
+                        "runAfter": {
+                          "Move_converted_file": ["Succeeded"]
+                        },
+                        "type": "Terminate",
+                        "inputs": {
+                          "runStatus": "Cancelled"
+                        }
+                      },
+                      "Create_JPG_file": {
+                        "runAfter": {
+                          "Convert_file": ["Succeeded"]
+                        },
+                        "type": "ApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connection": {
+                              "name": "@parameters('$connections')['onedrive']['connectionId']"
+                            }
+                          },
+                          "method": "post",
+                          "body": "@body('Convert_file')",
+                          "path": "/datasets/default/files",
+                          "queries": {
+                            "folderPath": "/Handwritten Notes",
+                            "name": "@{body('Get_file_metadata')?['NameNoExt']}.jpg"
+                          }
+                        },
+                        "runtimeConfiguration": {
+                          "contentTransfer": {
+                            "transferMode": "Chunked"
+                          }
+                        }
+                      },
+                      "Move_converted_file": {
+                        "runAfter": {
+                          "Create_JPG_file": ["Succeeded"]
+                        },
+                        "type": "ApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connection": {
+                              "name": "@parameters('$connections')['onedrive']['connectionId']"
+                            }
+                          },
+                          "method": "post",
+                          "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(body('Get_file_metadata')?['Id']))}/move",
+                          "queries": {
+                            "destination": "/Handwritten Notes/processed/@{body('Get_file_metadata')?['Name']}",
+                            "overwrite": true
+                          }
+                        }
+                      }
+                    },
+                    "else": {
+                      "actions": {
+                        "Terminate_-_Unsupported": {
+                          "type": "Terminate",
+                          "inputs": {
+                            "runStatus": "Failed",
+                            "runError": {
+                              "code": "400",
+                              "message": "Image type is not supported. Supported types: jpg, gif, png, bmp, tiff."
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "and": [
+                        {
+                          "equals": ["", ""]
+                        }
+                      ]
+                    },
+                    "type": "If"
+                  }
+                }
+              },
+              "expression": {
+                "or": [
+                  {
+                    "equals": ["@variables('imageFileExtension')", "jpg"]
+                  },
+                  {
+                    "equals": ["@variables('imageFileExtension')", "jpeg"]
+                  },
+                  {
+                    "equals": ["@variables('imageFileExtension')", "png"]
+                  },
+                  {
+                    "equals": ["@variables('imageFileExtension')", "gif"]
+                  },
+                  {
+                    "equals": ["@variables('imageFileExtension')", "bmp"]
+                  },
+                  {
+                    "equals": ["@variables('imageFileExtension')", "tiff"]
+                  }
+                ]
+              },
+              "type": "If"
+            },
+            "Move_Processed_File": {
+              "runAfter": {
+                "Create_markdown_file": ["Succeeded"]
+              },
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['onedrive']['connectionId']"
+                  }
+                },
+                "method": "post",
+                "path": "/datasets/default/files/@{encodeURIComponent(encodeURIComponent(body('Get_file_metadata')?['Id']))}/move",
+                "queries": {
+                  "destination": "/Handwritten Notes/processed/@{body('Get_file_metadata')?['Name']}",
+                  "overwrite": true
+                }
+              }
             }
           },
           "outputs": {}
@@ -289,7 +435,7 @@
             "value": {
               "onedrive": {
                 "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/onedrive')]",
-                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_onedrive_name'))]",
+                "connectionId": "[resourceId('Microsoft.Web/c`onnections', parameters('connections_onedrive_name'))]",
                 "connectionName": "onedrive"
               },
               "keyvault": {
