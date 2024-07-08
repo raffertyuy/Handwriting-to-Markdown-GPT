@@ -12,8 +12,8 @@ Also see this [blog post](https://raffertyuy.com/raztype/handwriting-to-second-b
 This solution is using Azure Logic Apps with the following flow:
 1. Watch for new files in a specific OneDrive folder
 2. Check for GPT-4o supported image formats
-  - if the filetype is PDF, convert to JPG using [OneDrive - Convert File](https://learn.microsoft.com/en-us/connectors/onedrive/#convert-file-(preview)) (limited to the first page of the PDF file).
-  - if the filetype is not supported, skip.
+   - if the filetype is PDF, convert to JPG using [OneDrive - Convert File](https://learn.microsoft.com/en-us/connectors/onedrive/#convert-file-(preview)) (limited to the first page of the PDF file).
+   - if the filetype is not supported, skip.
 3. Extract the text from the image file using GPT-4o (through a Function App).
 4. Copy the image and save a new markdown file output in a destination OneDrive folder.
 
