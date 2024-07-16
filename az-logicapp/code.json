@@ -12,7 +12,7 @@
                                     "inputs": {
                                         "host": {
                                             "connection": {
-                                                "name": "@parameters('$connections')['onedrive']['connectionId']"
+                                                "name": "@parameters('$connections')['onedrive-1']['connectionId']"
                                             }
                                         },
                                         "method": "get",
@@ -28,7 +28,7 @@
                                         "body": "@body('Convert_file')",
                                         "host": {
                                             "connection": {
-                                                "name": "@parameters('$connections')['onedrive']['connectionId']"
+                                                "name": "@parameters('$connections')['onedrive-1']['connectionId']"
                                             }
                                         },
                                         "method": "post",
@@ -54,7 +54,7 @@
                                     "inputs": {
                                         "host": {
                                             "connection": {
-                                                "name": "@parameters('$connections')['onedrive']['connectionId']"
+                                                "name": "@parameters('$connections')['onedrive-1']['connectionId']"
                                             }
                                         },
                                         "method": "post",
@@ -162,7 +162,7 @@
                 "inputs": {
                     "host": {
                         "connection": {
-                            "name": "@parameters('$connections')['onedrive']['connectionId']"
+                            "name": "@parameters('$connections')['onedrive-1']['connectionId']"
                         }
                     },
                     "method": "post",
@@ -184,7 +184,7 @@
                     "body": "---\nnote-type: @{body('Parse_JSON_-_Get_ExtractNotes_Response')?['noteType']}\ncreated-date: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\nlast-updated: @{formatDateTime(addToTime(utcNow(),8,'Hour'),'yyyy-MM-dd HH:mm')}\n---\n![[@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedTitle']}.@{variables('imageFileExtension')}]]\n\n@{body('Parse_JSON_-_Get_ExtractNotes_Response')?['extractedText']}",
                     "host": {
                         "connection": {
-                            "name": "@parameters('$connections')['onedrive']['connectionId']"
+                            "name": "@parameters('$connections')['onedrive-1']['connectionId']"
                         }
                     },
                     "method": "post",
@@ -210,11 +210,11 @@
                 "inputs": {
                     "host": {
                         "connection": {
-                            "name": "@parameters('$connections')['keyvault']['connectionId']"
+                            "name": "@parameters('$connections')['keyvault-1']['connectionId']"
                         }
                     },
                     "method": "get",
-                    "path": "/secrets/@{encodeURIComponent('razpython-defaulthostkey')}/value"
+                    "path": "/secrets/@{encodeURIComponent('raznotesapi-defaultkey')}/value"
                 },
                 "runAfter": {
                     "Check_if_Supported_Image": [
@@ -234,7 +234,7 @@
                 "inputs": {
                     "host": {
                         "connection": {
-                            "name": "@parameters('$connections')['onedrive']['connectionId']"
+                            "name": "@parameters('$connections')['onedrive-1']['connectionId']"
                         }
                     },
                     "method": "get",
@@ -258,7 +258,7 @@
                         ]
                     },
                     "method": "POST",
-                    "uri": "https://razpython.azurewebsites.net/api/ExtractNotes?code=@{body('Get_Functions_Secret')?['value']}"
+                    "uri": "https://raznotesapi.azurewebsites.net/api/ExtractNotes?code=@{body('Get_Functions_Secret')?['value']}"
                 },
                 "runAfter": {
                     "Get_Functions_Secret": [
@@ -293,7 +293,7 @@
                 "inputs": {
                     "host": {
                         "connection": {
-                            "name": "@parameters('$connections')['onedrive']['connectionId']"
+                            "name": "@parameters('$connections')['onedrive-1']['connectionId']"
                         }
                     },
                     "method": "post",
@@ -353,7 +353,7 @@
                 "inputs": {
                     "host": {
                         "connection": {
-                            "name": "@parameters('$connections')['onedrive']['connectionId']"
+                            "name": "@parameters('$connections')['onedrive-1']['connectionId']"
                         }
                     },
                     "method": "get",
@@ -380,20 +380,20 @@
     "parameters": {
         "$connections": {
             "value": {
-                "keyvault": {
-                    "connectionId": "/subscriptions/7308e0b7-489d-4f8b-80b7-832b0662d47d/resourceGroups/logicapps-rg/providers/Microsoft.Web/connections/keyvault",
-                    "connectionName": "keyvault",
+                "keyvault-1": {
+                    "connectionId": "/subscriptions/33e81e94-c18c-4d5a-a613-897c92b35411/resourceGroups/rg-notes-gpt/providers/Microsoft.Web/connections/keyvault-1",
+                    "connectionName": "keyvault-1",
                     "connectionProperties": {
                         "authentication": {
                             "type": "ManagedServiceIdentity"
                         }
                     },
-                    "id": "/subscriptions/7308e0b7-489d-4f8b-80b7-832b0662d47d/providers/Microsoft.Web/locations/southeastasia/managedApis/keyvault"
+                    "id": "/subscriptions/33e81e94-c18c-4d5a-a613-897c92b35411/providers/Microsoft.Web/locations/eastus/managedApis/keyvault"
                 },
-                "onedrive": {
-                    "connectionId": "/subscriptions/7308e0b7-489d-4f8b-80b7-832b0662d47d/resourceGroups/logicapps-rg/providers/Microsoft.Web/connections/onedrive",
-                    "connectionName": "onedrive",
-                    "id": "/subscriptions/7308e0b7-489d-4f8b-80b7-832b0662d47d/providers/Microsoft.Web/locations/southeastasia/managedApis/onedrive"
+                "onedrive-1": {
+                    "connectionId": "/subscriptions/33e81e94-c18c-4d5a-a613-897c92b35411/resourceGroups/rg-notes-gpt/providers/Microsoft.Web/connections/onedrive-1",
+                    "connectionName": "onedrive-1",
+                    "id": "/subscriptions/33e81e94-c18c-4d5a-a613-897c92b35411/providers/Microsoft.Web/locations/eastus/managedApis/onedrive"
                 }
             }
         }
