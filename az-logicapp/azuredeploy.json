@@ -431,7 +431,7 @@
             "value": {
               "onedrive": {
                 "id": "[concat('/subscriptions/',subscription().subscriptionId,'/providers/Microsoft.Web/locations/',resourceGroup().location,'/managedApis/onedrive')]",
-                "connectionId": "[resourceId('Microsoft.Web/c`onnections', parameters('connections_onedrive_name'))]",
+                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('connections_onedrive_name'))]",
                 "connectionName": "onedrive"
               },
               "keyvault": {
