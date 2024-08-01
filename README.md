@@ -89,3 +89,9 @@ Since we're passing a OneDrive file to Azure Functions as a `multipart/form-data
 ### Deployment
 - `code.json` is the copy-pasted code from the Logic Apps's code view, for reference. This is the exact code that I personally use after using the Logic App designer.
 - `azuredeploy.json` is the ARM template to be deployed to azure, generated from the resource group's "export template"
+
+### Running Locally
+- `az-logicapp` can't be run locally
+- `az-function`
+  - Create a file `local.settings.json` (refer to `local.settings.example.json`)
+  - can be run with `func start` (requires [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-develop-local).
