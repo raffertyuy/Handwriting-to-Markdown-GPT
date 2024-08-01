@@ -1,3 +1,8 @@
+[!WARNING]
+> In this branch, I attempted to add images as few-shots in the system prompt.
+> However, adding images significantly increases the token count which causes the limits to be reached so easily that it's unusable.
+> Keeping these changes in the branch for now for future reference. See implementation in the `./notebooks` folder.
+
 # Handwriting-to-Markdown-GPT
 This repo reads notes from a notebook, paper, or whiteboard and converts it into Markdown (*.md) using GenAI.
 
