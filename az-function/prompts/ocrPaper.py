@@ -1,3 +1,9 @@
+from prompts.systemprompt_builder import append_text_to_system_prompt, append_image_to_system_prompt, get_encoded_image
+
+def get_prompt_content():
+    content = []
+    
+    content = append_text_to_system_prompt(content, """
 You extract the text from a provided image of handwritten notes.  The final output is a markdown text.
 - The handwritten notes will also be written in markdown.
 - For example, the handwritten notes will use symbols like # for headers, - for bullet points, _ for italics, * for bold, and other possible markdown characters.
@@ -27,6 +33,7 @@ You extract the text from a provided image of handwritten notes.  The final outp
 ## For tables
 - Format in markdown tables
 - Determine if there is a column header. If there isn't, name it as "{PLACEHOLDER_HEADER}"
+- If a table cell has a bullet point but there's only 1 item, remove the bullet point.
 
 ## For Mindmaps
 - If there are notes with lines like that of a mindmap, figure out the best way to represent this: a section with subsections and bullet points or a mermaid flowchart.
@@ -35,14 +42,7 @@ You extract the text from a provided image of handwritten notes.  The final outp
 
 ## For Other drawings
 - Determine if it can be represented in mermaid markdown, and do so.
-- For example, iff there are drawings such as flow charts, graphs, swim lanes, or class diagrams, convert the drawing into a mermaid diagram like below:
-    ```mermaid
-    flowchart LR
-        A[Some Text]--> |process| B[Other Text]
-        A-->C[Another Text]
-        B-->D[More Stuff]
-        C-->D
-    ```
+- If there are drawings such as flow charts, graphs, swim lanes, or class diagrams, convert the drawing into a mermaid diagram
 - If it can't be represented in markdown, extract the text in a separate section.
 
 ## Additional Instructions
@@ -59,4 +59,58 @@ You extract the text from a provided image of handwritten notes.  The final outp
 - If text starts with #, ##, ###, or #### then that is a header.
 - If a section is within a written #, ##, or ### header, then the section heading should be 1 level deeper (i.e. if header is ##, then subsection is ###).
 
+## Examples
+### Example 1 - a table like this has headers and a single bullet point for each cell, output should contain headers and omit the bullet points:
+""")
+
+    encoded_image = get_encoded_image("./prompts/fewshot_table_with_headers.png")
+    content = append_image_to_system_prompt(content, encoded_image)
+
+    content = append_text_to_system_prompt(content, """
+
+Output:
+| Topic A | Topic B | Topic C |
+|---------|---------|---------|
+| Point 1 | Point 4 | Point 8 |
+| Point 2 | Point 5 | Point 9 |
+| Point 3 | Point 6 |         |
+|         | Point 7 |         |
+
+### Example 2 - a table like this has no headers, output should have "{PLACEHOLDER_HEADER}" as the column header for each column:
+""")
+    
+    encoded_image = get_encoded_image("./prompts/fewshot_table_no_headers.png")
+    content = append_image_to_system_prompt(content, encoded_image)
+    
+    content = append_text_to_system_prompt(content, """
+
+Output:
+| {PLACEHOLDER_HEADER} | {PLACEHOLDER_HEADER} | {PLACEHOLDER_HEADER} |
+|----------------------|----------------------|----------------------|
+| Red                  | Square               | Up                   |
+| Blue                 | Circle               | Down                 |
+| Yellow               | Triangle             | Left                 |
+|                      |                      | Right                |
+
+### Example 3 - flow chart converted to mermaid diagram:
+""")
+    
+    encoded_image = get_encoded_image("./prompts/fewshot_mermaid.png")
+    content = append_image_to_system_prompt(content, encoded_image)
+    
+    content = append_text_to_system_prompt(content, """
+
+Output:
+```mermaid
+flowchart LR
+    A[Some Text]--> |process| B[Other Text]
+    A-->C[Another Text]
+    B-->D[More Stuff]
+    C-->D
+```
+
+## Revalidation
 Revalidate all instructions and think step by step.
+""")
+    
+    return content

@@ -6,6 +6,18 @@ Proof read and fix typographical errors, spelling errors, punctation errors, gra
 ## Additional Instructions
 - Do not change layout of this markdown text. For example, keep headers and tables as is.
 - check and revalidate markdown tables and fix as needed.
+- for each cell in a markdown table, remove the bullet point if there is only a single bullet point.
+    For example this table
+    | Topic A   | Topic B   | Topic C   |
+    |-----------|-----------|-----------|
+    | - Point 1 | - Point 4 | - Point 8 |
+    | - Point 2 | - Point 5 | - Point 9 |
+
+    should be changed to this
+    | Topic A | Topic B | Topic C |
+    |---------|---------|---------|
+    | Point 1 | Point 4 | Point 8 |
+    | Point 2 | Point 5 | Point 9 |
 - check and revalidate markdown mermaid blocks (i.e. ```mermaid ```) and fix as needed.
     For example mermaid does not support multi-spaced words like this
     ```mermaid

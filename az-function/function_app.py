@@ -5,8 +5,12 @@ import os
 from openai import AzureOpenAI
 from azure.identity import DefaultAzureCredential, get_bearer_token_provider
 
-from image_processor import execute_image_completion, execute_text_completion, read_file
+import prompts.ocrPaper as ocrPaper
+import prompts.ocrWhiteboard as ocrWhiteboard
+from prompts.systemprompt_builder import read_file
+from image_processor import execute_image_completion, execute_text_completion
 from post_processor import remove_markdown_code_blocks, add_datestamp
+
 import base64
 import json
 
@@ -45,13 +49,14 @@ def ExtractNotes(req):
     noteType = execute_image_completion(client, image_base64, read_file("./prompts/detectNoteType.txt"), AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_VISION_TEMPERATURE)
 
     # Extract text from the image
-    ocr_prompt_filename = "./prompts/ocrImage.txt"
     if noteType == "PAPER":
-      ocr_prompt_filename = "./prompts/ocrPaper.txt"
+        system_prompt = ocrPaper.get_prompt_content()
     elif noteType == "WHITEBOARD":
-      ocr_prompt_filename = "./prompts/ocrPaper.txt"
+        system_prompt = ocrWhiteboard.get_prompt_content()
+    else:
+        system_prompt = read_file("./prompts/ocrImage.txt")
 
-    extracted_text = execute_image_completion(client, image_base64, read_file(ocr_prompt_filename), AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_VISION_TEMPERATURE)
+    extracted_text = execute_image_completion(client, image_base64, system_prompt, AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_VISION_TEMPERATURE)
 
     # Post-process the extracted text
     if noteType == "PAPER" or noteType == "WHITEBOARD":

@@ -1,4 +1,5 @@
 import logging
+import json
 
 def execute_image_completion(client, encoded_image, system_prompt, deployment_name="gpt-4o", temperature=0):
     """
@@ -24,12 +25,23 @@ def execute_image_completion(client, encoded_image, system_prompt, deployment_na
     if system_prompt is None:
         logging.info("system_prompt parameter is required.")
         raise ValueError("system_prompt parameter is required.")
-
-    messages = [
-        {
-            "role": "system",
-            "content": system_prompt
-        },
+    
+    if isinstance(system_prompt, list) or isinstance(system_prompt, dict):
+        messages = [
+            {
+                "role": "system",
+                "content": json.dumps(system_prompt)
+            }
+        ]
+    else:
+        messages = [
+            {
+                "role": "system",
+                "content": json.dumps(system_prompt)
+            }
+        ]
+    
+    messages.append(
         {
             "role": "user",
             "content": [
@@ -41,7 +53,7 @@ def execute_image_completion(client, encoded_image, system_prompt, deployment_na
                 }
             ]
         }
-    ]
+    )
 
     logging.info("Executing image completion...")
     response = client.chat.completions.create(
@@ -77,17 +89,28 @@ def execute_text_completion(client, text, system_prompt, deployment_name="gpt-4o
     if system_prompt is None:
         logging.info("system_prompt parameter is required.")
         raise ValueError("system_prompt parameter is required.")
-
-    messages = [
-        {
-            "role": "system",
-            "content": system_prompt
-        },
+    
+    if isinstance(system_prompt, list) or isinstance(system_prompt, dict):
+        messages = [
+            {
+                "role": "system",
+                "content": json.dumps(system_prompt)
+            }
+        ]
+    else:
+        messages = [
+            {
+                "role": "system",
+                "content": json.dumps(system_prompt)
+            }
+        ]
+    
+    messages.append(
         {
             "role": "user",
             "content": text
         }
-    ]
+    )
 
     logging.info("Executing text completion...")
     response = client.chat.completions.create(
@@ -97,18 +120,3 @@ def execute_text_completion(client, text, system_prompt, deployment_name="gpt-4o
     )
 
     return response.choices[0].message.content
-
-
-def read_file(file_path):
-    """
-    Reads the contents of a file and returns it as a string.
-
-    Args:
-        file_path (str): The path to the file.
-
-    Returns:
-        str: The contents of the file as a string.
-    """
-    with open(file_path, 'r') as file:
-        content = file.read()
-    return content
