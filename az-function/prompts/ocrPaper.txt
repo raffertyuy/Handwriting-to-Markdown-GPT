@@ -35,7 +35,7 @@ You extract the text from a provided image of handwritten notes.  The final outp
 
 ## For Other drawings
 - Determine if it can be represented in mermaid markdown, and do so.
-- For example, iff there are drawings such as flow charts, graphs, swim lanes, or class diagrams, convert the drawing into a mermaid diagram like below:
+- For example, if there are drawings such as flow charts, graphs, swim lanes, or class diagrams, convert the drawing into a mermaid diagram like below:
     ```mermaid
     flowchart LR
         A[Some Text]--> |process| B[Other Text]

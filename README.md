@@ -42,6 +42,72 @@ flowchart LR
 > - Prompt Flow in VS Code doesn't support an `image` input type.
 > - Prompt Flow on [AI Studio](https://ai.azure.com) doesn't support GPT-4o (but GPT-4V is available in preview)
 
+
+## Instructions for Running Locally and for Deployment
+There is no one-click deployment for this solution yet. If you want to try, feel free to [Contribute](./CONTRIBUTING.md).
+For now, here are the manual instructions.
+
+### Pre-requisites
+1. An active [Azure Subscription](https://azure.microsoft.com)
+2. An Azure OpenAI resource
+3. An Azure Key Vault resource
+
+### Running Locally
+This app requires Microsoft Azure and can't be run locally. However, you may do the following to try and test the output:
+1. Run the Jupyter [notebook](./notebooks/notebook.ipynb)
+  - Create a `.env` file (refer to `.env.example`)
+  - Modify the image path in this cell `IMAGE_PATH="../media/notes-sample.png"`
+  - Run the notebook
+2. Run the Azure Function locally
+  - Install the [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-develop-local)
+  - Create a file `local.settings.json` (refer to `local.settings.example.json`)
+  - Go to the local CLI and run `func start`
+
+> [!NOTE]
+> The current code assumes that you have an Azure Identity with the necessary access to your Azure OpenAI resource. To do so:
+> 1. Go to the [Azure Portal](https://portal.azure.com)
+> 2. Go to your Azure OpenAI resource
+> 3. Go to the **Access control (IAM)** tab
+> 4. Add a role assignment, and add yourself with the role [Cognitive Services OpenAI User](https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/role-based-access-control#cognitive-services-openai-user) (or Contributor).
+
+### Azure Deployment
+1. Deploy the Azure Function
+  - Opening the source in [VS Code](https://code.visualstudio.com/)
+  - Installing the [Azure Functions](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions) extension
+  - In the _Explorer_ pane, right-click the `az-function` folder, and then click **Deploy to Function App...**
+  - Test the function using the **Test & View Output** button
+
+2. Add Azure Function key in the Key Vault
+ - Go to the deployed Azure Function
+ - Go to the **App keys** tab and copy the _default_ function key
+ - Go to your Azure Key Vault resource (one of the [pre-requisites](#pre-requisites))
+ - Go to **Secrets** and add the function key as a secret
+
+3. Deploy the Azure Logic App
+  - Going to the [Azure Portal](https://portal.azure.com)
+  - In the search bar, search for _"Template Deployment"_
+  - Load the `./az-logicapp/azuredeploy.json` file
+  - Fill in the required parameters
+  - Deploy
+
+4. Configure Azure Logic App Idenity
+  - Go to the deployed Azure Logic App
+  - Click the **Identity** tab
+  - Click _"Identity"_ → _"System assigned"_, and then turn `Status = On`
+  - Add a role assignment, and add the Logic App with the role `Key Vault Secrets User`
+
+
+5. Check Azure Logic App connections
+  - Check and fix the connection to your personal OneDrive account
+  - Check and fix the connection to your Azure Key Vault
+  - After deployment, go to the Logic App
+  - Click _"Identity"_ → _"System assigned"_, and then turn `Status = On`
+
+> [!TIP]
+> - If you need to troubleshoot, check [code.json](/az-logicapp/azuredeploy.json). This is the copy-pasted code from the Logic App designer, included for reference.
+> - If you're wondering why I didn't use managed identities to authorize the Logic App to the Azure Function, see [Logic App Notes](#logic-app-notes) below.
+
+
 ## Azure Function Notes
 ### Python Programming Model
 This Azure function is developed using the [Python v2 programming model](https://learn.microsoft.com/en-us/azure/azure-functions/functions-reference-python?tabs=asgi%2Capplication-level&pivots=python-mode-decorators) and is deployed using the [VS Code Extension: Azure Functions](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions).
@@ -85,13 +151,3 @@ Since we're passing a OneDrive file to Azure Functions as a `multipart/form-data
 > I eventually used the **HTTP Request** connector instead of an **Azure Functions** connector.
 > This is because the response body is in JSON, and the Azure Functions connector returns this in a JSON-escaped string format.
 > Since I'm using Obsidian for my second brain, my final markdown image link uses `![[image_path]]` instead of the standard `![name](image_path)` format.
-
-### Deployment
-- `code.json` is the copy-pasted code from the Logic Apps's code view, for reference. This is the exact code that I personally use after using the Logic App designer.
-- `azuredeploy.json` is the ARM template to be deployed to azure, generated from the resource group's "export template"
-
-### Running Locally
-- `az-logicapp` can't be run locally
-- `az-function`
-  - Create a file `local.settings.json` (refer to `local.settings.example.json`)
-  - can be run with `func start` (requires [Azure Functions Core Tools](https://learn.microsoft.com/en-us/azure/azure-functions/functions-develop-local).
