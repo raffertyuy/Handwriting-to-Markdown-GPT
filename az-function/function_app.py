@@ -22,13 +22,6 @@ AZURE_OPENAI_TEXT_TEMPERATURE=float(os.environ["AzureOpenAiTextTemperature"])
 logging.info("Getting Azure AD token provider...")
 token_provider = get_bearer_token_provider(DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default")
 
-logging.info("Creating Azure OpenAI client...")
-client = AzureOpenAI(
-  azure_endpoint = AZURE_OPENAI_ENDPOINT,
-  api_version=AZURE_OPENAI_API_VERSION,
-  azure_ad_token_provider=token_provider
-)
-
 # Function App
 app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
@@ -40,21 +33,28 @@ def ExtractNotes(req):
     image = req.files['image']
     image_bytes = image.stream.read()
     image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+    
+    logging.info("Creating Azure OpenAI client...")
+    client = AzureOpenAI(
+      azure_endpoint = AZURE_OPENAI_ENDPOINT,
+      api_version=AZURE_OPENAI_API_VERSION,
+      azure_ad_token_provider=token_provider
+    )
 
     # Identify image note type
-    noteType = execute_image_completion(client, image_base64, read_file("./prompts/detectNoteType.txt"), AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_VISION_TEMPERATURE)
+    note_type = execute_image_completion(client, image_base64, read_file("./prompts/detectNoteType.txt"), AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_VISION_TEMPERATURE)
 
     # Extract text from the image
     ocr_prompt_filename = "./prompts/ocrImage.txt"
-    if noteType == "PAPER":
+    if note_type == "PAPER":
       ocr_prompt_filename = "./prompts/ocrPaper.txt"
-    elif noteType == "WHITEBOARD":
+    elif note_type == "WHITEBOARD":
       ocr_prompt_filename = "./prompts/ocrPaper.txt"
 
     extracted_text = execute_image_completion(client, image_base64, read_file(ocr_prompt_filename), AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_VISION_TEMPERATURE)
 
     # Post-process the extracted text
-    if noteType == "PAPER" or noteType == "WHITEBOARD":
+    if note_type == "PAPER" or note_type == "WHITEBOARD":
       extracted_text = execute_text_completion(client, extracted_text, read_file("./prompts/proofread.txt"), AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_TEXT_TEMPERATURE)
       extracted_text = execute_text_completion(client, extracted_text, read_file("./prompts/sectionHeader.txt"), AZURE_OPENAI_DEPLOYMENT, AZURE_OPENAI_TEXT_TEMPERATURE)
 
@@ -65,7 +65,7 @@ def ExtractNotes(req):
 
     # Final response
     response_data = {
-      "noteType": noteType,
+      "noteType": note_type,
       "extractedTitle": extracted_title,
       "extractedText": extracted_text
     }

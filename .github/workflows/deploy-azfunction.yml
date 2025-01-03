@@ -42,14 +42,14 @@ jobs:
     - name: Deploy to Azure Function
       run: |
         az functionapp config appsettings set --name ${{ vars.AZURE_FUNCTION_APP_NAME }} -g ${{ vars.AZURE_RESOURCE_GROUP }} \
-            --settings WEBSITE_RUN_FROM_PACKAGE=${{ env.blob_url }} \
-            AzureOpenAiApiVersion=${{ vars.AzureOpenAiApiVersion }} \
-            AzureOpenAiDeployment=${{ vars.AzureOpenAiDeployment }} \
-            AzureOpenAiEndpoint=${{ vars.AzureOpenAiEndpoint }} \
-            AzureOpenAiTextTemperature=${{ vars.AzureOpenAiTextTemperature }} \
-            AzureOpenAiVisionTemperature=${{ vars.AzureOpenAiVisionTemperature }} \
-            AzureWebJobsStorage__blobServiceUri='https://${{ vars.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net' \
-            AzureWebJobsStorage__queueServiceUri='https://${{ vars.AZURE_STORAGE_ACCOUNT }}.queue.core.windows.net' \
-            AzureWebJobsStorage__tableServiceUri='https://${{ vars.AZURE_STORAGE_ACCOUNT }}.table.core.windows.net' \
-            WEBSITE_RUN_FROM_PACKAGE_BLOB_MI_RESOURCE_ID=${{ vars.WEBSITE_RUN_FROM_PACKAGE_BLOB_MI_RESOURCE_ID }}
+          --settings WEBSITE_RUN_FROM_PACKAGE=${{ env.blob_url }} \
+          AzureOpenAiApiVersion=${{ vars.AzureOpenAiApiVersion }} \
+          AzureOpenAiDeployment=${{ vars.AzureOpenAiDeployment }} \
+          AzureOpenAiEndpoint=${{ vars.AzureOpenAiEndpoint }} \
+          AzureOpenAiTextTemperature=${{ vars.AzureOpenAiTextTemperature }} \
+          AzureOpenAiVisionTemperature=${{ vars.AzureOpenAiVisionTemperature }} \
+          AzureWebJobsStorage__blobServiceUri='https://${{ vars.AZURE_STORAGE_ACCOUNT }}.blob.core.windows.net' \
+          AzureWebJobsStorage__queueServiceUri='https://${{ vars.AZURE_STORAGE_ACCOUNT }}.queue.core.windows.net' \
+          AzureWebJobsStorage__tableServiceUri='https://${{ vars.AZURE_STORAGE_ACCOUNT }}.table.core.windows.net' \
+          WEBSITE_RUN_FROM_PACKAGE_BLOB_MI_RESOURCE_ID=${{ vars.WEBSITE_RUN_FROM_PACKAGE_BLOB_MI_RESOURCE_ID }}
         az functionapp restart --name ${{ vars.AZURE_FUNCTION_APP_NAME }} -g ${{ vars.AZURE_RESOURCE_GROUP }}
