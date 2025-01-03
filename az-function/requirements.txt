@@ -4,4 +4,4 @@
 
 azure-functions
 azure-identity==1.16.0
-openai==1.25.1
+openai==1.58.1
