@@ -18,9 +18,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     
-    - name: Archive /az-function to app.zip
+    - name: Set up Python version
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Build and Package /az-function python app to app.zip
       run: |
         cd az-function
+
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt --target=".python_packages/lib/site-packages"
+        
         zip -r ../app.zip .
         cd ..
     
