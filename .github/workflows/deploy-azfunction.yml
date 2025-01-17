@@ -1,4 +1,4 @@
-name: Deploy Azure Function
+name: Deploy Azure Function (Standard Consumption)
 
 on:
   push:
