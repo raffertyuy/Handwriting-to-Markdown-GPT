@@ -39,6 +39,33 @@ jobs:
         client-id: ${{ secrets.AZURE_CLIENT_ID }}
         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+
+    - name: Check and manage Storage Account network access
+      run: |
+        # Check current network access state
+        current_access=$(az storage account show --name ${{ vars.AZURE_STORAGE_ACCOUNT }} \
+          --resource-group ${{ vars.AZURE_RESOURCE_GROUP }} \
+          --query "publicNetworkAccess" -o tsv)
+        
+        echo "Current public network access: $current_access"
+        echo "network_was_disabled=false" >> $GITHUB_ENV
+        
+        if [ "$current_access" = "Disabled" ]; then
+          echo "Enabling Azure Storage public access..."
+          az storage account update --name ${{ vars.AZURE_STORAGE_ACCOUNT }} \
+            --resource-group ${{ vars.AZURE_RESOURCE_GROUP }} \
+            --public-network-access Enabled \
+            --default-action Allow
+          
+          echo "network_was_disabled=true" >> $GITHUB_ENV
+          
+          # Wait for changes to propagate
+          echo "Waiting for network changes to propagate..."
+          sleep 30
+
+        # Verify network rules
+        az storage account show -n ${{ vars.AZURE_STORAGE_ACCOUNT }} --query networkRuleSet
+        fi
     
     - name: Upload app.zip to Azure Storage
       run: |
@@ -47,7 +74,14 @@ jobs:
         url=$(az storage blob url -c ${{ vars.AZURE_STORAGE_CONTAINER }} -n 'app.zip' --account-name ${{ vars.AZURE_STORAGE_ACCOUNT }} --auth-mode login)
         echo "Blob URL: $url"
         echo "blob_url=$url" >> $GITHUB_ENV
-
+    
+    - name: Re-disable Azure Storage network access if it was initially denied
+      if: env.network_was_disabled == 'true'
+      run: |
+        az storage account update --name ${{ vars.AZURE_STORAGE_ACCOUNT }} \
+          --resource-group ${{ vars.AZURE_RESOURCE_GROUP }} \
+          --public-network-access Disabled
+          
     - name: Deploy to Azure Function
       run: |
         az functionapp config appsettings set --name ${{ vars.AZURE_FUNCTION_APP_NAME }} -g ${{ vars.AZURE_RESOURCE_GROUP }} \
