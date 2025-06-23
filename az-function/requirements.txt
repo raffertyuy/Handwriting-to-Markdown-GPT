@@ -5,3 +5,4 @@
 azure-functions
 azure-identity==1.16.0
 openai==1.58.1
+cryptography==43.0.3
